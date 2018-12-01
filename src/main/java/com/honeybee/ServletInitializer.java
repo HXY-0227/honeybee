@@ -1,4 +1,4 @@
-package com.bee.honeybee;
+package com.honeybee;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
