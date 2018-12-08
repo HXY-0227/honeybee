@@ -3,10 +3,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bee</groupId>
+    <groupId>com</groupId>
     <artifactId>honeybee</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
+
+    <!-- 加载配置文件 -->
+    <profiles>
+        <profile>
+            <id>localhost</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <env.properties>local</env.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>shengchan</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env.properties>prod</env.properties>
+            </properties>
+        </profile>
+    </profiles>
 
     <name>honeybee</name>
     <description>Demo project for Spring Boot</description>
@@ -14,7 +36,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.0.RELEASE</version>
+        <version>1.5.14.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -53,7 +75,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Mybatis-->
@@ -63,6 +84,13 @@
             <version>1.3.2</version>
         </dependency>
 
+        <!-- mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.10</version>
+        </dependency>
+
         <!-- druid数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -70,22 +98,49 @@
             <version>1.1.0</version>
         </dependency>
 
-        <!-- pageHelper分页插件 -->
+        <!--&lt;!&ndash; pageHelper分页插件 &ndash;&gt;
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.3</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
     <build>
+        <finalName>honeybee</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.5.14.RELEASE</version>
+                <configuration>
+                    <mainClass>com.honeybee.HoneybeeApplication</mainClass>
+                    <layout>WAR</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
     </build>
 
 
