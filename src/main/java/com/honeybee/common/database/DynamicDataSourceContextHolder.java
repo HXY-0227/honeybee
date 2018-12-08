@@ -24,13 +24,13 @@ public class DynamicDataSourceContextHolder {
     /**
      * 数据源的 key 集合，用于切换时判断数据源是否存在
      */
-    public static List<Object> dataSourcesKyes = new ArrayList<>();
+    public static List<Object> dataSourceKeys = new ArrayList<>();
 
     /**
      * 设置数据源的key
      * @param key
      */
-    public static void setDataSourcesKye(String key) {
+    public static void setDataSourceKey(String key) {
         contextHolder.set(key);
     }
 
@@ -54,8 +54,8 @@ public class DynamicDataSourceContextHolder {
      * @param key
      * @return
      */
-    public static boolean containSourceKey(String key) {
-        return dataSourcesKyes.contains(key);
+    public static boolean containDataSourceKey(String key) {
+        return dataSourceKeys.contains(key);
     }
 
 }

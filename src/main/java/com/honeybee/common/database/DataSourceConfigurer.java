@@ -2,26 +2,32 @@ package com.honeybee.common.database;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Configuration
 public class DataSourceConfigurer {
+
+    private final Logger logger = LoggerFactory.getLogger(DataSourceConfigurer.class);
 
     /**
      * 主数据源
      * @return
      */
-    @Bean(name = "master")
+    @Bean("master")
     @Primary
-    @ConfigurationProperties(prefix = "")
+    @ConfigurationProperties(prefix = "spring.datasource.druid.master")
     public DataSource master() {
+        DataSource dataSource = DruidDataSourceBuilder.create().build();
         return DruidDataSourceBuilder.create().build();
     }
 
@@ -29,8 +35,8 @@ public class DataSourceConfigurer {
      * 备数据源
      * @return
      */
-    @Bean(name = "slave")
-    @ConfigurationProperties(prefix = "")
+    @Bean("slave")
+    @ConfigurationProperties(prefix = "spring.datasource.druid.slave")
     public DataSource slave() {
         return DruidDataSourceBuilder.create().build();
     }
@@ -39,7 +45,7 @@ public class DataSourceConfigurer {
      * 动态数据源
      * @return
      */
-    @Bean(name = "dynamicDataSource")
+    @Bean("dynamicDataSource")
     public DataSource dynamicDataSource() {
         DynamicRoutingDataSource dynamicRoutingDataSource = new DynamicRoutingDataSource();
         Map<Object,Object> dataSourceMap = new HashMap<>(2);
@@ -51,7 +57,7 @@ public class DataSourceConfigurer {
         // 将 master 和 slave 数据源作为指定的数据源
         dynamicRoutingDataSource.setTargetDataSources(dataSourceMap);
         // 将数据源的 key 放到数据源上下文的 key 集合中，用于切换时判断数据源是否有效
-        DynamicDataSourceContextHolder.dataSourcesKyes.addAll(dataSourceMap.keySet());
+        DynamicDataSourceContextHolder.dataSourceKeys.addAll(dataSourceMap.keySet());
         return dynamicRoutingDataSource;
     }
 
@@ -60,14 +66,11 @@ public class DataSourceConfigurer {
      * @return
      * @throws Exception
      */
-    @Bean(name = "sqlSessionFactoryBean")
-    @ConfigurationProperties(prefix = "")
-    public SqlSessionFactoryBean sqlSessionFactoryBean() throws Exception{
-        final SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+    @Bean
+    @ConfigurationProperties(prefix = "mybatis")
+    public SqlSessionFactoryBean sqlSessionFactoryBean() {
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dynamicDataSource());
-        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver()
-                .getResources(""));
-        sqlSessionFactoryBean.setTypeAliasesPackage("");
         return sqlSessionFactoryBean;
 
     }

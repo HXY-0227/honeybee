@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.honeybee.dao.UserMapper">
-    <resultMap id="user" type="UserMapper">
-        <id column="user_id"  property="userId" jdbcType="varchar"></id>
-        <result column="user_password" property="password" jdbcType="varchar"></result>
-        <result column="user_phone" property="phone" jdbcType="varchar"></result>
-        <result column="user_name" property="name" jdbcType="varchar"></result>
-        <result column="create_time" property="createTime" jdbcType="datetime"></result>
-        <result column="update_time" property="updateTime" jdbcType="datetime"></result>
+    <resultMap id="user" type="com.honeybee.common.bean.UserBean">
+        <id column="user_id"  property="userId"></id>
+        <result column="user_password" property="password"></result>
+        <result column="user_phone" property="phone"></result>
+        <result column="user_name" property="name"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
     </resultMap>
 
-    <!-- 根据电话查找用户 -->
-    <select id="" parameterType="" resultMap="">
+    <!-- 根据电话查找用户
+    <select id="selectByUserPhone" parameterType="String" resultMap="user">
         SELECT u.phone,u.name,u.createTime,u.updateTime
         FROM user_table u
         WHERE u.user_phone=#{phone}
-    </select>
+    </select> -->
 
     <!-- 根据用户名查找用户 -->
-    <select id="" parameterType="" resultMap="">
-        SELECT u.phone,u.name,u.createTime,u.updateTime
+    <select id="selectByUserName" parameterType="String" resultMap="user">
+        SELECT u.user_name,u.user_phone,u.create_time,u.update_time
         FROM user_table u
-        WHERE u.user_name=#{naem}
+        WHERE u.user_name=#{name}
     </select>
 
-    <!-- 注册用户 -->
-    <insert id="insertUser" parameterMap="UserBean">
+    <!-- 注册用户
+    <insert id="insertUser" parameterType="UserBean">
         INSERT INTO user_table (user_id,user_password,user_phone,user_name,create_time,update_time)
         VALUES (#{userId},#{password},#{phone},#{name},#{createTime},#{updateTime})
-    </insert>
+    </insert> -->
 </mapper>

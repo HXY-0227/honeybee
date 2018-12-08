@@ -1,6 +1,5 @@
 package com.honeybee.service;
 
-import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
 
 public interface UserService {
@@ -9,19 +8,21 @@ public interface UserService {
      * 检查数据是否可用
      * @return
      */
-    public HoneyResult checkData();
+    //public HoneyResult checkData();
 
     /**
      * 用户注册
      * @return
      */
-    public HoneyResult register(UserBean user);
+    //public HoneyResult register(UserBean user);
 
     /**
      * 用户登录
      * @return
      */
-    public HoneyResult login(String phone, String password);
+    //public HoneyResult login(String phone, String password);
+
+    public UserBean select();
 
 
 }
