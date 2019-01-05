@@ -1,4 +1,4 @@
-package com.honeybee.common.database.ds;
+package com.honeybee.common.database;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

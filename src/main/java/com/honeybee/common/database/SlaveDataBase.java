@@ -1,4 +1,4 @@
-package com.honeybee.common.database.ds;
+package com.honeybee.common.database;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
-@MapperScan(basePackages = MasterDataSource.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory")
-public class MasterDataSource extends DataSource {
+@MapperScan(basePackages = SlaveDataBase.PACKAGE, sqlSessionFactoryRef = "slaveSqlSessionFactory")
+public class SlaveDataBase extends DataSource{
     static final String PACKAGE = "com.honeybee.dao";
 
     @Value("${mybatis.type-aliases-package}")
@@ -25,8 +26,8 @@ public class MasterDataSource extends DataSource {
      * 配置数据源
      * @return
      */
-    @ConfigurationProperties(prefix = "spring.datasource.druid.master")
-    @Bean(name="masterDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.druid.slave")
+    @Bean(name = "slaveDataSource")
     public javax.sql.DataSource dataSource(){
         return DruidDataSourceBuilder.create().build();
     }
@@ -36,19 +37,22 @@ public class MasterDataSource extends DataSource {
      * 在需要的地方加上 @Transactional 注解即可
      * @return
      */
-    @Bean(name = "masterTransactionManager")
-    public DataSourceTransactionManager masterTransactionManager() {
+    @Bean(name = "slaveTransactionManager")
+    @Primary
+    public DataSourceTransactionManager slaveTransactionManager() {
         return new DataSourceTransactionManager(dataSource());
     }
+
 
     /**
      * 配置 SqlSessionFactoryBean
      * @return
      * @throws Exception
      */
-    @Bean(name = "masterSqlSessionFactory")
-    public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource") javax.sql.DataSource masterDataSource)
+    @Bean(name = "slaveSqlSessionFactory")
+    @Primary
+    public SqlSessionFactory slaveSqlSessionFactory(@Qualifier("slaveDataSource") javax.sql.DataSource slaveDataSource)
             throws Exception {
-        return sqlSessionFactory(masterDataSource, mapperLocation, typePackage);
+        return sqlSessionFactory(slaveDataSource, mapperLocation, typePackage);
     }
 }
