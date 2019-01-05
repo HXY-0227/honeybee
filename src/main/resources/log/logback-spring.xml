@@ -3,6 +3,7 @@
 
 	<contextName>honeybee</contextName>
 
+	<!--设置控制台日志颜色-->
 	<property name="sonsoleLogPattern"
 			  value="%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level) |%blue(%thread) |%blue(%file:%line) |%green(%logger) |%cyan(%msg%n)"/>
 	<!-- 设置系统日志目录，用springProfile可以配置不同的环境 -->
