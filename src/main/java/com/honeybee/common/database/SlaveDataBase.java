@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
+/**
+ * 配置多数据源
+ * @author HXY
+ * @version 1.0
+ */
 @Configuration
 @MapperScan(basePackages = SlaveDataBase.PACKAGE, sqlSessionFactoryRef = "slaveSqlSessionFactory")
 public class SlaveDataBase extends DataSource{

@@ -5,6 +5,8 @@ import java.io.StringWriter;
 
 /**
  * 异常处理工具
+ * @author HXY
+ * @version 1.0
  */
 public class ExceptionUtil {
 

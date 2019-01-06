@@ -2,6 +2,10 @@ package com.honeybee.service;
 
 import com.honeybee.common.bean.UserBean;
 
+/**
+ * @author HXY
+ * @version 1.0
+ */
 public interface UserService {
 
     /**

@@ -1,15 +1,16 @@
 package com.honeybee.common.bean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
 /**
  * 自定义响应结构
+ * @author HXY
+ * @version 1.0
  */
-@NoArgsConstructor
-@Data
-public class HoneyResult {
+public class HoneyResult implements Serializable {
+
+    private static final long serialVersionUID = -570683798213903190L;
 
     //自定义jackson对象
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -23,28 +24,59 @@ public class HoneyResult {
     //响应中的数据
     private Object data;
 
+    //正常状态码
+    public static final int OK_STATE = 200;
+
+    //异常状态码
+    public static final int ERR_STATE = 500;
+
+    //正常相应信息
+    public static final String OK_MESSAGE = "OK";
+
+    /**
+     * 正常的构造函数
+     * @param data 返回的数据
+     */
     public HoneyResult(Object data) {
-        this.status = 200;
-        this.msg = "OK";
+        this.status = OK_STATE;
+        this.msg = OK_MESSAGE;
         this.data = data;
     }
 
+    /**
+     * 异常的构造函数
+     * @param status 状态码
+     * @param msg 响应信息
+     * @param data 返回的数据
+     */
     public HoneyResult(Integer status, String msg, Object data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
     }
 
+    /**
+     * 正常不返回数据
+     * @return
+     */
     public static HoneyResult ok() {
         return new HoneyResult(null);
     }
 
+    /**
+     * 异常不返回数据
+     * @return
+     */
     public static HoneyResult build(Integer status, String msg) {
-        return new HoneyResult(new HoneyResult(status, msg, null));
+        return new HoneyResult(status, msg, null);
     }
 
+    /**
+     * 异常返回数据
+     * @return
+     */
     public static HoneyResult build(Integer status, String msg, Object data) {
-        return new HoneyResult(new HoneyResult(status, msg, data));
+        return new HoneyResult(status, msg, data);
     }
 
 }

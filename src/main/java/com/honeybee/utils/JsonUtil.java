@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * json转化工具
+ * @author HXY
+ * @version 1.0
  */
 public class JsonUtil {
 

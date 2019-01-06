@@ -2,11 +2,18 @@ package com.honeybee.common.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 用户
+ * @author HXY
+ * @version 1.0
+ */
 @Data
-public class UserBean {
+public class UserBean implements Serializable {
 
+    private static final long serialVersionUID = -548072219559017078L;
     /**
      *  用户Id
      */
