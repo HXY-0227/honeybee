@@ -71,10 +71,17 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Lombok -->
+        <!-- Lombok替代get、set方法 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- fastjson json转换器 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
         </dependency>
 
         <!-- Mybatis-->
