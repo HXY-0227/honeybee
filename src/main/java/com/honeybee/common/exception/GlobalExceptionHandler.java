@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
-
 /**
  * 全局异常处理类
  * @author HXY
@@ -33,11 +31,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public HoneyResult handleException(Exception e) {
 
-        logger.error(e.getCause().getMessage());
+        logger.error(e.getMessage());
         logger.error(ExceptionUtil.getStackTrace(e));
         return HoneyResult.build(HoneyResult.ERR_STATE,e.getMessage());
     }
 
+    /**
+     * 参数无效的异常处理
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = InvalidException.class)
     @ResponseBody
     public HoneyResult handleInvalidException(InvalidException e) {

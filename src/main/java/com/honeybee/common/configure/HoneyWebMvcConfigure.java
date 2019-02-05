@@ -33,9 +33,10 @@ public class HoneyWebMvcConfigure extends WebMvcConfigurerAdapter {
         //创建配置类
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         //修改配置返回内容的过滤
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat,SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue,
-                SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.WriteNullListAsEmpty,
-                SerializerFeature.WriteNullNumberAsZero,SerializerFeature.WriteNullBooleanAsFalse);
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat,SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty,
+                SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullNumberAsZero,
+                SerializerFeature.WriteNullBooleanAsFalse);
 
         fastJsonConverter.setFastJsonConfig(fastJsonConfig);
 
@@ -44,7 +45,7 @@ public class HoneyWebMvcConfigure extends WebMvcConfigurerAdapter {
         List<MediaType> mediaTypes = Collections.singletonList(MediaType.APPLICATION_JSON_UTF8);
         stringConverter.setSupportedMediaTypes(mediaTypes);
 
-        //讲fastJson添加到消息转换列表
+        //讲fastJsonConverter添加到消息转换列表，stringConverter
         converters.add(fastJsonConverter);
         converters.add(stringConverter);
     }

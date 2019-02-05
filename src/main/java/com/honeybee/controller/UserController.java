@@ -30,10 +30,11 @@ public class UserController {
         logger.info("开始查询");
         UserBean result =  userService.select();
 
-        logger.info("查询结束：" + result.toString());
         if (1 ==1) {
-            throw new InvalidException(ResultCode.INVALID_PARAMETER.getCode(),ResultCode.INVALID_PARAMETER.getMessage());
+            int n = 1 / 0;
+            //throw new InvalidException(ResultCode.INVALID_PARAMETER.getCode(),ResultCode.INVALID_PARAMETER.getMessage());
         }
+        logger.info("查询结束：" + result.toString());
         return result;
 
     }

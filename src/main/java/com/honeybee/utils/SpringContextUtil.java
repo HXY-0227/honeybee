@@ -1,4 +1,4 @@
-package com.honeybee.common.utils;
+package com.honeybee.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
