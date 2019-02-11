@@ -5,11 +5,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * 获取spring上下文工具类
+ */
 @Component
 public class SpringContextUtil implements ApplicationContextAware {
 
     //spring应用上下文环境
     private static ApplicationContext applicationContext;
+
+    //实例化对象
+    private static volatile SpringContextUtil instance = null;
 
     /**
      * 实现ApplicationContextAware接口的回调方法，设置上下文环境
@@ -18,12 +24,29 @@ public class SpringContextUtil implements ApplicationContextAware {
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (SpringContextUtil.applicationContext == null) {
-            SpringContextUtil.applicationContext = applicationContext;
-        }
+        this.applicationContext = applicationContext;
     }
 
-    public static ApplicationContext getApplicationContext() {
+    /**
+     * 单例模式保证创建唯一实例
+     * @return SpringContextUtil实例
+     */
+    public static SpringContextUtil getInstance() {
+        if (null == instance) {
+            synchronized (SpringContextUtil.class) {
+                if (null == instance) {
+                    instance = new SpringContextUtil();
+                }
+            }
+        }
+        return instance;
+    }
+
+    /**
+     * 获取spring上下文
+     * @return
+     */
+    public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
@@ -32,7 +55,7 @@ public class SpringContextUtil implements ApplicationContextAware {
      * @param name 对象注册在spring中的名称
      * @return
      */
-    public static Object getBeanByName(String name) {
+    public Object getBeanByName(String name) {
         return getApplicationContext().getBean(name);
     }
 
@@ -42,7 +65,7 @@ public class SpringContextUtil implements ApplicationContextAware {
      * @param <T>
      * @return
      */
-    public static <T> T getBeanByClass(Class<T> clazz) {
+    public <T> T getBeanByClass(Class<T> clazz) {
         return getApplicationContext().getBean(clazz);
     }
 }
