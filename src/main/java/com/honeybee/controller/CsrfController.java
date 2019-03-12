@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -22,14 +23,16 @@ public class CsrfController {
     private final static Logger logger = LoggerFactory.getLogger(CsrfController.class);
 
     /**
-     * 生成session，返回到前台
+     * 在服务端保存token，并将生成的token返回到前台
+     * @param session
+     * @return 生成的token
      */
     @GetMapping("")
     @ResponseBody
-    public HoneyResult creatToken(HttpSession session) {
+    public HoneyResult creatToken(HttpServletRequest request) {
         logger.info("begin create csrfToken...");
         String token = Utils.createToken(128);
-        session.setAttribute("token",token);
+        request.getSession().setAttribute("token",token);
         logger.info("end create csrfToken...");
         return new HoneyResult(token);
 

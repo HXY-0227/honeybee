@@ -1,7 +1,14 @@
 package com.honeybee.common.Filter;
 
+import org.apache.ibatis.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -9,20 +16,26 @@ import java.io.IOException;
  * @author HXY
  */
 @WebFilter(urlPatterns = "/*", filterName = "csrfFilter")
-public class CsrfFilter implements Filter {
+public class CsrfFilter extends OncePerRequestFilter {
+
+    private final static String REQUEST_METHOD_POST = "POST";
+    private final static Logger logger = LoggerFactory.getLogger(CsrfFilter.class);
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-    }
+        logger.info("Begin csrf...");
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        //服务器端存储的token
+        String token_server = (String) request.getSession().getAttribute("token");
+        //客户端请求的token
+        String token_client = (String) request.getAttribute("token");
 
-    }
+        //如果是post请求，则做csrf校验
+        if (REQUEST_METHOD_POST.equals(request.getMethod())) {
+            filterChain.doFilter(request, response);
+        }
 
-    @Override
-    public void destroy() {
-
+        logger.info("End Csrf...");
     }
 }
