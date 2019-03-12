@@ -1,17 +1,19 @@
 package com.honeybee.controller;
 
-import com.honeybee.common.bean.ResultCode;
 import com.honeybee.common.bean.UserBean;
-import com.honeybee.common.exception.InvalidException;
 import com.honeybee.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.SecureRandom;
+
 /**
+ * userController
  * @author HXY
  * @version 1.0
  */
@@ -22,22 +24,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/select")
+    @ResponseBody
     public UserBean xxxx() {
 
         logger.info("开始查询");
         UserBean result =  userService.select();
-
-        if (1 ==1) {
-            int n = 1 / 0;
-            //throw new InvalidException(ResultCode.INVALID_PARAMETER.getCode(),ResultCode.INVALID_PARAMETER.getMessage());
-        }
         logger.info("查询结束：" + result.toString());
         return result;
 
     }
-
 
 }

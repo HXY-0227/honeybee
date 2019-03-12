@@ -1,6 +1,8 @@
 package com.honeybee.common.bean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
  * @author HXY
  * @version 1.0
  */
+@Data
 public class HoneyResult implements Serializable {
 
     private static final long serialVersionUID = -570683798213903190L;

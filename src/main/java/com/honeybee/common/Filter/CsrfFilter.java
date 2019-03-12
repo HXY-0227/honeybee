@@ -19,6 +19,7 @@ import java.io.IOException;
 public class CsrfFilter extends OncePerRequestFilter {
 
     private final static String REQUEST_METHOD_POST = "POST";
+    private final static String REQUEST_METHOD_GET = "GET";
     private final static Logger logger = LoggerFactory.getLogger(CsrfFilter.class);
 
     @Override
@@ -33,7 +34,12 @@ public class CsrfFilter extends OncePerRequestFilter {
 
         //如果是post请求，则做csrf校验
         if (REQUEST_METHOD_POST.equals(request.getMethod())) {
-            filterChain.doFilter(request, response);
+            if (null != token_client && null != token_server && token_client.equals(token_server)) {
+                filterChain.doFilter(request, response);
+            }
+            logger.info("Csrf parameter is invalid...");
+        }else if (REQUEST_METHOD_GET.equals(request.getMethod())){
+            filterChain.doFilter(request,response);
         }
 
         logger.info("End Csrf...");

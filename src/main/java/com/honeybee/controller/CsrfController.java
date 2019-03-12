@@ -24,10 +24,10 @@ public class CsrfController {
 
     /**
      * 在服务端保存token，并将生成的token返回到前台
-     * @param session
+     * @param request
      * @return 生成的token
      */
-    @GetMapping("")
+    @GetMapping("/honeybee/csrf")
     @ResponseBody
     public HoneyResult creatToken(HttpServletRequest request) {
         logger.info("begin create csrfToken...");
