@@ -4,16 +4,15 @@ import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
- * CsrfController 返回token到前台
+ * CsrfController 生成token，存储在session中并返回到前台
  * @author HXY
  * @version 1.0
  */
@@ -29,8 +28,9 @@ public class CsrfController {
      */
     @GetMapping("/honeybee/csrf")
     @ResponseBody
-    public HoneyResult creatToken(HttpServletRequest request) {
+    public HoneyResult createToken(HttpServletRequest request) {
         logger.info("begin create csrfToken...");
+        Cookie[] cookies = request.getCookies();
         String token = Utils.createToken(128);
         request.getSession().setAttribute("token",token);
         logger.info("end create csrfToken...");
