@@ -30,7 +30,6 @@ public class CsrfController {
     @ResponseBody
     public HoneyResult createToken(HttpServletRequest request) {
         logger.info("begin create csrfToken...");
-        Cookie[] cookies = request.getCookies();
         String token = Utils.createToken(128);
         request.getSession().setAttribute("token",token);
         logger.info("end create csrfToken...");

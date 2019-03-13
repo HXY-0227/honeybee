@@ -10,16 +10,16 @@ public class Utils {
 
     /**
      * 生成固定长度的token：包含大小写字母和数字
-     * @param lenght 需要的token的长度
+     * @param length 需要的token的长度
      * @return
      */
-    public static String createToken(int lenght) {
+    public static String createToken(int length) {
 
         //token
         StringBuffer token = new StringBuffer();
         SecureRandom random = new SecureRandom();
 
-        for (int i = 0; i < lenght; i++) {
+        for (int i = 0; i < length; i++) {
             int num = random.nextInt(3);
             switch (num) {
                 case 0:
