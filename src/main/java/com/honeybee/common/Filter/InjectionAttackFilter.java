@@ -1,5 +1,6 @@
 package com.honeybee.common.Filter;
 
+import com.honeybee.wrapper.InjectionAttackWrapper;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -16,8 +17,25 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*", filterName = "injectionAttackFilter")
 public class InjectionAttackFilter extends OncePerRequestFilter {
 
+    private static final String X_FRAME_HEADER = "X-FRAME-OPTIONS";
+    private static final String X_FRAME_VALUE = "DENY";
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        InjectionAttackWrapper wrapperRequest = new InjectionAttackWrapper(request);
+        filterClickJacking(response);
+        filterChain.doFilter(wrapperRequest,response);
+    }
 
+    /**
+     * 防止点击劫持
+     * @param response HttpServletResponse
+     */
+    private void filterClickJacking(HttpServletResponse response) {
+        if (!response.containsHeader(X_FRAME_HEADER)) {
+            // 禁止在页面加载iframe页面，防止点击劫持
+            response.addHeader(X_FRAME_HEADER,X_FRAME_VALUE);
+        }
     }
 }
