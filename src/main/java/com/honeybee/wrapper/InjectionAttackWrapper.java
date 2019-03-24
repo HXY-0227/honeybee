@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,13 +63,17 @@ public class InjectionAttackWrapper extends HttpServletRequestWrapper {
         //调用父类方法，获取原始的value
         Map<String, String[]> parameterMap =  super.getParameterMap();
         Map<String, String[]> filteredMap = new HashMap<>(parameterMap.size());
-        Set<String> keys = parameterMap.keySet();
-        //遍历原始value，将value取出进行过滤
-        for (String key : keys) {
-            String[] parameterValues = parameterMap.get(key);
+
+        //遍历原始value，将value取出进行过滤，entrySet遍历效率高于keySet
+        Set<Map.Entry<String, String[]>> entrySet = parameterMap.entrySet();
+        Iterator<Map.Entry<String, String[]>> it = entrySet.iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String[]> entry = it.next();
+            String[] parameterValues = entry.getValue();
             String[] filteredValue = filterStringArray(parameterValues);
-            filteredMap.put(key,filteredValue);
+            filteredMap.put(entry.getKey(),filteredValue);
         }
+
         return filteredMap;
     }
 
