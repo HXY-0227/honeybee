@@ -1,8 +1,34 @@
+/**
+ * Password Hashing With PBKDF2 (http://crackstation.net/hashing-security.htm).
+ * Copyright (c) 2013, Taylor Hornby
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.honeybee.utils;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -63,7 +89,7 @@ public class PasswordHash {
 
         // 通过pbkdf2对密码加密
         byte[] hash = pbkdf2(password.toCharArray(), salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
-        return "";
+        return toHex(salt) + ":" + toHex(hash);
     }
 
     /**
@@ -87,6 +113,7 @@ public class PasswordHash {
      * @return 比较结果
      */
     private static boolean slowEquals(byte[] a, byte[] b) {
+        // == 经常被解释为带有分支的语句，导致代码运行时间不固定 ^保证当且仅当两个数各位都相等是才是0，否则不为0
         int diff = a.length ^ b.length;
         for (int i = 0; i < a.length && i < b.length; i++) {
             diff |= a[i] ^ b[i];
@@ -117,9 +144,8 @@ public class PasswordHash {
     private static byte[] fromHex(String hex) {
         byte[] binary = new byte[hex.length() / 2];
         for (int i = 0; i < binary.length; i++) {
-            binary[i] = (byte) Integer.parseInt(hex.substring(2 * 1, 2 * i + 2), 16);
+            binary[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return binary;
     }
-
 }
