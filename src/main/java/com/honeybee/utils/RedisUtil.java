@@ -21,7 +21,7 @@ public class RedisUtil {
     /**************************key的操作**************************/
 
     /**
-     * 删除key
+     * del
      * @param key
      */
     public void delete(String key) {
@@ -29,24 +29,24 @@ public class RedisUtil {
     }
 
     /**
-     * 批量删除key
-     * @param keys
+     * del
+     * @param keys key集合
      */
     public void delete(Collection<String> keys) {
         redisTemplate.delete(keys);
     }
 
     /**
-     * key是否存在
+     * exists
      * @param key key
      * @return 判断结果
      */
-    public boolean hasKey(String key) {
+    public boolean exists(String key) {
         return redisTemplate.hasKey(key);
     }
 
     /**
-     * 设置过期时间
+     * expire
      * @param key key
      * @param timeout 过期时间
      * @param unit 时间粒度
@@ -57,7 +57,7 @@ public class RedisUtil {
     }
 
     /**
-     * 返回剩余的过期时间
+     * ttl
      * @param key key
      * @return 结果
      */
@@ -66,7 +66,7 @@ public class RedisUtil {
     }
 
     /**
-     * 移除key的过期时间
+     * persist
      * @param key
      * @return 结果
      */
@@ -75,7 +75,7 @@ public class RedisUtil {
     }
 
     /**
-     * 返回匹配模式的key
+     * keys
      * @param pattern
      * @return
      */
@@ -86,7 +86,7 @@ public class RedisUtil {
     /**************************String的操作**************************/
 
     /**
-     * 将字符串value设给key
+     * set
      * @param key
      * @param value
      */
@@ -95,7 +95,7 @@ public class RedisUtil {
     }
 
     /**
-     * 获取指定key对应的值
+     * get
      * @param key key
      * @return value
      */
@@ -104,14 +104,51 @@ public class RedisUtil {
     }
 
     /**
-     * 返回
+     * mGet
+     * @param keys key集合
+     * @return value集合
+     */
+    public List<String> mGet(Collection<String> keys) {
+        return redisTemplate.opsForValue().multiGet(keys);
+    }
+
+    /**
+     * getRange
      * @param key key
      * @param start 起始偏移量
      * @param end 结束偏移量
      * @return value
      */
-    public String subString(String key, long start, long end) {
+    public String getRange(String key, long start, long end) {
         return redisTemplate.opsForValue().get(key, start, end);
     }
 
+    /**
+     * strLen
+     * @param key key
+     * @return 长度
+     */
+    public Long strLen(String key) {
+        return redisTemplate.opsForValue().size(key);
+    }
+
+    /**
+     * incrby
+     * @param key key
+     * @param increment 增长量
+     * @return 增长后的value
+     */
+    public Long incrBy(String key, long increment) {
+        return redisTemplate.opsForValue().increment(key, increment);
+    }
+
+    /**
+     * append
+     * @param key
+     * @param value
+     * @return
+     */
+    public Integer append(String key, String value) {
+        return redisTemplate.opsForValue().append(key, value);
+    }
 }
