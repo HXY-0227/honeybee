@@ -1,5 +1,6 @@
 package com.honeybee.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,9 @@ public class RedisUtil {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    // 默认过期时间 单位：秒
+    public static final long DEFAULT_EXPIRE_TIME = 24 * 60 * 60;
 
     /**************************key的操作**************************/
 
@@ -196,14 +200,6 @@ public class RedisUtil {
     }
 
     /**
-     * hDel
-     * @param key key
-     */
-    public void hDel(String key, Object... fields) {
-        redisTemplate.opsForHash().delete(key, fields);
-    }
-
-    /**
      * hKeys
      * @param key
      * @return fields
@@ -225,10 +221,18 @@ public class RedisUtil {
      * hExists
      * @param key key
      * @param field field
-     * @return 结果
+     * @return 是否存在
      */
     public boolean hExists(String key, Object field) {
         return redisTemplate.opsForHash().hasKey(key, field);
+    }
+
+    /**
+     * hDel
+     * @param key key
+     */
+    public void hDel(String key, Object... fields) {
+        redisTemplate.opsForHash().delete(key, fields);
     }
 
     /**
@@ -241,6 +245,82 @@ public class RedisUtil {
     }
 
     /**************************List的操作**************************/
+
+    /**
+     * lpush
+     * @param key key
+     * @param value value
+     * @return 执行命令完毕后列表长度
+     */
+    public Long lPush(String key, Object... value) {
+        return redisTemplate.opsForList().leftPush(key, value);
+    }
+    /**
+     * lpush
+     * @param key key
+     * @param values values
+     * @return 执行命令完毕后列表长度
+     */
+    public Long lPush(String key, Collection<Object> values) {
+        return redisTemplate.opsForList().leftPushAll(key, values);
+    }
+
+    /**
+     * lSet
+     * @param key key
+     * @param index 索引
+     * @param value value
+     */
+    public void lSet(String key, Long index, Object value) {
+        redisTemplate.opsForList().set(key, index, value);
+    }
+
+    /**
+     * lIndex
+     * @param key key
+     * @param index index
+     * @return 元素值
+     */
+    public Object lIndex(String key, Long index) {
+        return redisTemplate.opsForList().index(key, index);
+    }
+
+    /**
+     * lRange
+     * @param key key
+     * @param start 开始索引
+     * @param end 结束索引
+     * @return 指定范围的元素列表
+     */
+    public List<Object> lRange(String key, Long start, Long end) {
+        return redisTemplate.opsForList().range(key, start, end);
+    }
+
+    /**
+     * lRem
+     * @param key key
+     * @param count
+     *        count > 0 : 从表头开始向表尾搜索，移除与 value 相等的元素，数量为 count
+     *        count < 0 : 从表尾开始向表头搜索，移除与 value 相等的元素，数量为 count 的绝对值
+     *        count = 0 : 移除表中所有与 value 相等的值
+     * @param value value
+     * @return 移除元素的数量
+     */
+    public Long lRem(String key, long count, String value) {
+        return redisTemplate.opsForList().remove(key, count, value);
+    }
+
+    /**
+     * lLen
+     * @param key key
+     * @return length
+     */
+    public Long lLen(String key) {
+        return redisTemplate.opsForList().size(key);
+    }
+
+    /**************************Set的操作**************************/
+
 
 
 }
