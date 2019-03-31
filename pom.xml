@@ -31,7 +31,7 @@
     </profiles>
 
     <name>honeybee</name>
-    <description>Demo project for Spring Boot</description>
+    <description>honeybee</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -110,6 +110,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
         <!--&lt;!&ndash; pageHelper分页插件 &ndash;&gt;
         <dependency>
             <groupId>com.github.pagehelper</groupId>
