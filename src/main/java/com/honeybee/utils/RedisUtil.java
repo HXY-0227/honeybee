@@ -1,10 +1,12 @@
 package com.honeybee.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -13,10 +15,11 @@ import java.util.concurrent.TimeUnit;
  * @author HXY
  * @version 1.0
  */
+@Component
 public class RedisUtil {
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     /**************************key的操作**************************/
 
@@ -77,7 +80,7 @@ public class RedisUtil {
     /**
      * keys
      * @param pattern
-     * @return
+     * @return values
      */
     public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
@@ -90,7 +93,7 @@ public class RedisUtil {
      * @param key
      * @param value
      */
-    public void set(String key, String value) {
+    public void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -99,14 +102,14 @@ public class RedisUtil {
      * @param key key
      * @return value
      */
-    public String get(String key) {
+    public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
     /**
      * mGet
-     * @param keys key集合
-     * @return value集合
+     * @param keys keys
+     * @return values
      */
     public List<String> mGet(Collection<String> keys) {
         return redisTemplate.opsForValue().multiGet(keys);
@@ -151,4 +154,93 @@ public class RedisUtil {
     public Integer append(String key, String value) {
         return redisTemplate.opsForValue().append(key, value);
     }
+
+    /**************************Hash的操作**************************/
+
+    /**
+     * hSet
+     * @param key key
+     * @param field field
+     */
+    public void hSet(String key, Object field, Object value) {
+        redisTemplate.opsForHash().put(key, field, value);
+    }
+
+    /**
+     * hmSet
+     * @param key key
+     * @param field field-value
+     */
+    public void hmSet(String key, Map<String, String> field) {
+        redisTemplate.opsForHash().putAll(key, field);
+    }
+
+    /**
+     * hGet
+     * @param key key
+     * @param field field
+     * @return value
+     */
+    public Object hGet(String key, String field) {
+        return redisTemplate.opsForHash().get(key, field);
+    }
+
+    /**
+     * hGetAll
+     * @param key key
+     * @param fields fields
+     * @return values
+     */
+    public List<Object> hGetAll(String key, Collection<Object> fields) {
+        return redisTemplate.opsForHash().multiGet(key, fields);
+    }
+
+    /**
+     * hDel
+     * @param key key
+     */
+    public void hDel(String key, Object... fields) {
+        redisTemplate.opsForHash().delete(key, fields);
+    }
+
+    /**
+     * hKeys
+     * @param key
+     * @return fields
+     */
+    public Set<Object> hKeys(String key) {
+        return redisTemplate.opsForHash().keys(key);
+    }
+
+    /**
+     * hVals
+     * @param key key
+     * @return values
+     */
+    public List<Object> hVals(String key) {
+        return redisTemplate.opsForHash().values(key);
+    }
+
+    /**
+     * hExists
+     * @param key key
+     * @param field field
+     * @return 结果
+     */
+    public boolean hExists(String key, Object field) {
+        return redisTemplate.opsForHash().hasKey(key, field);
+    }
+
+    /**
+     * hLen
+     * @param key key
+     * @return length
+     */
+    public Long hLen(String key) {
+        return redisTemplate.opsForHash().size(key);
+    }
+
+    /**************************List的操作**************************/
+
+
 }
