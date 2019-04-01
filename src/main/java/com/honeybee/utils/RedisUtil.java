@@ -28,7 +28,7 @@ public class RedisUtil {
     /**************************key的操作**************************/
 
     /**
-     * del
+     * DEL
      * @param key
      */
     public void delete(String key) {
@@ -36,7 +36,7 @@ public class RedisUtil {
     }
 
     /**
-     * del
+     * DEL
      * @param keys key集合
      */
     public void delete(Collection<String> keys) {
@@ -44,7 +44,7 @@ public class RedisUtil {
     }
 
     /**
-     * exists
+     * EXISTS
      * @param key key
      * @return 判断结果
      */
@@ -53,7 +53,7 @@ public class RedisUtil {
     }
 
     /**
-     * expire
+     * EXPIRE
      * @param key key
      * @param timeout 过期时间
      * @param unit 时间粒度
@@ -64,7 +64,7 @@ public class RedisUtil {
     }
 
     /**
-     * ttl
+     * TTL
      * @param key key
      * @return 结果
      */
@@ -73,7 +73,7 @@ public class RedisUtil {
     }
 
     /**
-     * persist
+     * PERSIST
      * @param key
      * @return 结果
      */
@@ -82,7 +82,7 @@ public class RedisUtil {
     }
 
     /**
-     * keys
+     * KEYS
      * @param pattern
      * @return values
      */
@@ -93,7 +93,7 @@ public class RedisUtil {
     /**************************String的操作**************************/
 
     /**
-     * set
+     * SET
      * @param key
      * @param value
      */
@@ -102,7 +102,7 @@ public class RedisUtil {
     }
 
     /**
-     * get
+     * GET
      * @param key key
      * @return value
      */
@@ -111,7 +111,7 @@ public class RedisUtil {
     }
 
     /**
-     * mGet
+     * MGET
      * @param keys keys
      * @return values
      */
@@ -120,7 +120,7 @@ public class RedisUtil {
     }
 
     /**
-     * getRange
+     * GETRANGE
      * @param key key
      * @param start 起始偏移量
      * @param end 结束偏移量
@@ -131,7 +131,7 @@ public class RedisUtil {
     }
 
     /**
-     * strLen
+     * STRLEN
      * @param key key
      * @return 长度
      */
@@ -140,7 +140,7 @@ public class RedisUtil {
     }
 
     /**
-     * incrby
+     * INCRBY
      * @param key key
      * @param increment 增长量
      * @return 增长后的value
@@ -150,7 +150,7 @@ public class RedisUtil {
     }
 
     /**
-     * append
+     * APPEND
      * @param key
      * @param value
      * @return
@@ -162,7 +162,7 @@ public class RedisUtil {
     /**************************Hash的操作**************************/
 
     /**
-     * hSet
+     * HSET
      * @param key key
      * @param field field
      */
@@ -171,7 +171,7 @@ public class RedisUtil {
     }
 
     /**
-     * hmSet
+     * HMSET
      * @param key key
      * @param field field-value
      */
@@ -180,7 +180,7 @@ public class RedisUtil {
     }
 
     /**
-     * hGet
+     * HGET
      * @param key key
      * @param field field
      * @return value
@@ -190,7 +190,7 @@ public class RedisUtil {
     }
 
     /**
-     * hGetAll
+     * HGETALL
      * @param key key
      * @param fields fields
      * @return values
@@ -200,7 +200,7 @@ public class RedisUtil {
     }
 
     /**
-     * hKeys
+     * HKEYS
      * @param key
      * @return fields
      */
@@ -209,7 +209,7 @@ public class RedisUtil {
     }
 
     /**
-     * hVals
+     * HVALS
      * @param key key
      * @return values
      */
@@ -218,7 +218,7 @@ public class RedisUtil {
     }
 
     /**
-     * hExists
+     * HEXISTS
      * @param key key
      * @param field field
      * @return 是否存在
@@ -228,7 +228,7 @@ public class RedisUtil {
     }
 
     /**
-     * hDel
+     * HDEL
      * @param key key
      */
     public void hDel(String key, Object... fields) {
@@ -236,7 +236,7 @@ public class RedisUtil {
     }
 
     /**
-     * hLen
+     * HLEN
      * @param key key
      * @return length
      */
@@ -247,7 +247,7 @@ public class RedisUtil {
     /**************************List的操作**************************/
 
     /**
-     * lpush
+     * LPUSH
      * @param key key
      * @param value value
      * @return 执行命令完毕后列表长度
@@ -256,7 +256,7 @@ public class RedisUtil {
         return redisTemplate.opsForList().leftPush(key, value);
     }
     /**
-     * lpush
+     * LPUSH
      * @param key key
      * @param values values
      * @return 执行命令完毕后列表长度
@@ -266,7 +266,7 @@ public class RedisUtil {
     }
 
     /**
-     * lSet
+     * LSET
      * @param key key
      * @param index 索引
      * @param value value
@@ -276,7 +276,7 @@ public class RedisUtil {
     }
 
     /**
-     * lIndex
+     * LINDEX
      * @param key key
      * @param index index
      * @return 元素值
@@ -286,7 +286,7 @@ public class RedisUtil {
     }
 
     /**
-     * lRange
+     * LRANGE
      * @param key key
      * @param start 开始索引
      * @param end 结束索引
@@ -297,7 +297,7 @@ public class RedisUtil {
     }
 
     /**
-     * lRem
+     * LREM
      * @param key key
      * @param count
      *        count > 0 : 从表头开始向表尾搜索，移除与 value 相等的元素，数量为 count
@@ -311,7 +311,7 @@ public class RedisUtil {
     }
 
     /**
-     * lLen
+     * LLEN
      * @param key key
      * @return length
      */
@@ -320,6 +320,96 @@ public class RedisUtil {
     }
 
     /**************************Set的操作**************************/
+
+    /**
+     * SADD
+     * @param key
+     * @param values values
+     * @return 添加成功的元素数量
+     */
+    public Long sAdd(String key, Object... values) {
+        return redisTemplate.opsForSet().add(key, values);
+    }
+
+    /**
+     * SCARD
+     * @param key key
+     * @return length
+     */
+    public Long sCard(String key) {
+        return redisTemplate.opsForSet().size(key);
+    }
+
+    /**
+     * SDIFF
+     * @param key1 key1
+     * @param key2 key2
+     * @return 差集
+     */
+    public Set<Object> sDiff(String key1, String key2) {
+        return redisTemplate.opsForSet().difference(key1, key2);
+    }
+
+    /**
+     * SINTER
+     * @param key1 key1
+     * @param key2 key2
+     * @return 交集
+     */
+    public Set<Object> sInter(String key1, String key2) {
+        return redisTemplate.opsForSet().intersect(key1, key2);
+    }
+
+    /**
+     * SISMEMBER
+     * @param key key
+     * @param value value
+     * @return 该元素是否给定集合的成员
+     */
+    public boolean sIsMember(String key, Object value) {
+        return redisTemplate.opsForSet().isMember(key, value);
+    }
+
+    /**
+     * SMEMBER
+     * @param key key
+     * @return 集合的所有元素
+     */
+    public Set<Object> sMember(String key) {
+        return redisTemplate.opsForSet().members(key);
+    }
+
+    /**
+     * SMOVE
+     * @param sourceKey sourceKey
+     * @param destinationKey destinationKey
+     * @return 是否移动成功
+     */
+    public boolean sMove(String sourceKey, Object value, String destinationKey) {
+        return redisTemplate.opsForSet().move(sourceKey, value, destinationKey);
+    }
+
+    /**
+     * SREM
+     * @param key key
+     * @param values values
+     * @return 移除成功的个数
+     */
+    public Long sRem(String key, Object... values) {
+        return redisTemplate.opsForSet().remove(key, values);
+    }
+
+    /**
+     * SUNION
+     * @param key1 key1
+     * @param key2 key2
+     * @return 交集
+     */
+    public Set<Object> sUnion(String key1, String key2) {
+        return redisTemplate.opsForSet().union(key1, key2);
+    }
+
+    /**************************SortedSet的操作**************************/
 
 
 
