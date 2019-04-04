@@ -411,6 +411,71 @@ public class RedisUtil {
 
     /**************************SortedSet的操作**************************/
 
+    /**
+     * ZADD
+     * @param key key
+     * @param value value
+     * @param score score
+     * @return 是否添加成功
+     */
+    public boolean zAdd(String key, Object value, double score) {
+        return redisTemplate.opsForZSet().add(key, value, score);
+    }
+
+    /**
+     * ZCARD
+     * @param key key
+     * @return length
+     */
+    public Long zCard(String key) {
+        return redisTemplate.opsForZSet().size(key);
+    }
+
+    /**
+     * ZCOUNT
+     * @param key key
+     * @param minScore scoreMin
+     * @param maxScore scoreMax
+     * @return length
+     */
+    public Long zCount(String key, double minScore, double maxScore) {
+        return redisTemplate.opsForZSet().count(key, minScore, maxScore);
+    }
+
+    /**
+     * ZINCRBY
+     * @param key key
+     * @param value value
+     * @param score increment
+     * @return 增加后成员的分数
+     */
+    public Double zIncrby(String key, Object value, double score) {
+        return redisTemplate.opsForZSet().incrementScore(key, value, score);
+    }
+
+    /**
+     * ZRANGE
+     * @param key key
+     * @param start start point
+     * @param end end point
+     * @return 指定范围的元素集合
+     */
+    public Set<Object> zRange(String key, long start, long end) {
+        return redisTemplate.opsForZSet().range(key, start, end);
+    }
+
+    /**
+     * ZRANGEBYSCORE
+     * @param key key
+     * @param minScore minScore
+     * @param maxScore maxScore
+     * @return 指定分数区间的元素集合
+     */
+    public Set<Object> zRangeByScore(String key, double minScore, double maxScore) {
+        return redisTemplate.opsForZSet().rangeByScore(key, minScore, maxScore);
+    }
+
+
 
 
 }
