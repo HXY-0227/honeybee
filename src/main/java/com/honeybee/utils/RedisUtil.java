@@ -1,6 +1,5 @@
 package com.honeybee.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -84,7 +83,7 @@ public class RedisUtil {
     /**
      * KEYS
      * @param pattern
-     * @return values
+     * @return 获取所有的key
      */
     public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
@@ -104,7 +103,7 @@ public class RedisUtil {
     /**
      * GET
      * @param key key
-     * @return value
+     * @return 返回给定的key值
      */
     public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
@@ -113,7 +112,7 @@ public class RedisUtil {
     /**
      * MGET
      * @param keys keys
-     * @return values
+     * @return 返回所有给定的key值
      */
     public List<String> mGet(Collection<String> keys) {
         return redisTemplate.opsForValue().multiGet(keys);
@@ -124,7 +123,7 @@ public class RedisUtil {
      * @param key key
      * @param start 起始偏移量
      * @param end 结束偏移量
-     * @return value
+     * @return 截取到的子字符串
      */
     public String getRange(String key, long start, long end) {
         return redisTemplate.opsForValue().get(key, start, end);
@@ -153,7 +152,7 @@ public class RedisUtil {
      * APPEND
      * @param key
      * @param value
-     * @return
+     * @return 追加value后字符串的长度
      */
     public Integer append(String key, String value) {
         return redisTemplate.opsForValue().append(key, value);
@@ -183,7 +182,7 @@ public class RedisUtil {
      * HGET
      * @param key key
      * @param field field
-     * @return value
+     * @return 给定key对应的值
      */
     public Object hGet(String key, String field) {
         return redisTemplate.opsForHash().get(key, field);
@@ -193,7 +192,7 @@ public class RedisUtil {
      * HGETALL
      * @param key key
      * @param fields fields
-     * @return values
+     * @return 哈希中所有的key和value
      */
     public List<Object> hGetAll(String key, Collection<Object> fields) {
         return redisTemplate.opsForHash().multiGet(key, fields);
@@ -202,7 +201,7 @@ public class RedisUtil {
     /**
      * HKEYS
      * @param key
-     * @return fields
+     * @return 哈希中所有键的集合
      */
     public Set<Object> hKeys(String key) {
         return redisTemplate.opsForHash().keys(key);
@@ -211,7 +210,7 @@ public class RedisUtil {
     /**
      * HVALS
      * @param key key
-     * @return values
+     * @return 哈希中所有值的集合
      */
     public List<Object> hVals(String key) {
         return redisTemplate.opsForHash().values(key);
@@ -230,15 +229,16 @@ public class RedisUtil {
     /**
      * HDEL
      * @param key key
+     * @return 移除成功的数量
      */
-    public void hDel(String key, Object... fields) {
-        redisTemplate.opsForHash().delete(key, fields);
+    public Long hDel(String key, Object... fields) {
+        return redisTemplate.opsForHash().delete(key, fields);
     }
 
     /**
      * HLEN
      * @param key key
-     * @return length
+     * @return 哈希长度
      */
     public Long hLen(String key) {
         return redisTemplate.opsForHash().size(key);
@@ -279,7 +279,7 @@ public class RedisUtil {
      * LINDEX
      * @param key key
      * @param index index
-     * @return 元素值
+     * @return 下标为index的元素
      */
     public Object lIndex(String key, Long index) {
         return redisTemplate.opsForList().index(key, index);
@@ -313,7 +313,7 @@ public class RedisUtil {
     /**
      * LLEN
      * @param key key
-     * @return length
+     * @return 列表的长度
      */
     public Long lLen(String key) {
         return redisTemplate.opsForList().size(key);
@@ -323,21 +323,63 @@ public class RedisUtil {
 
     /**
      * SADD
-     * @param key
-     * @param values values
+     * @param key key
+     * @param members members
      * @return 添加成功的元素数量
      */
-    public Long sAdd(String key, Object... values) {
-        return redisTemplate.opsForSet().add(key, values);
+    public Long sAdd(String key, Object... members) {
+        return redisTemplate.opsForSet().add(key, members);
     }
 
     /**
      * SCARD
      * @param key key
-     * @return length
+     * @return
+     *      key存在时：集合的基数。
+     *      key不存在时：返回 0
      */
     public Long sCard(String key) {
         return redisTemplate.opsForSet().size(key);
+    }
+
+    /**
+     * SISMEMBER
+     * @param key key
+     * @param member member
+     * @return 该元素是否给定集合的成员
+     */
+    public boolean sIsMember(String key, Object member) {
+        return redisTemplate.opsForSet().isMember(key, member);
+    }
+
+    /**
+     * SMEMBER
+     * @param key key
+     * @return 集合的所有元素集合
+     */
+    public Set<Object> sMember(String key) {
+        return redisTemplate.opsForSet().members(key);
+    }
+
+    /**
+     * SMOVE
+     * @param sourceKey sourceKey
+     * @param destinationKey destinationKey
+     * @param member member
+     * @return 是否移动成功
+     */
+    public boolean sMove(String sourceKey, Object member, String destinationKey) {
+        return redisTemplate.opsForSet().move(sourceKey, member, destinationKey);
+    }
+
+    /**
+     * SREM
+     * @param key key
+     * @param members members
+     * @return 移除成功的个数
+     */
+    public Long sRem(String key, Object... members) {
+        return redisTemplate.opsForSet().remove(key, members);
     }
 
     /**
@@ -361,49 +403,10 @@ public class RedisUtil {
     }
 
     /**
-     * SISMEMBER
-     * @param key key
-     * @param value value
-     * @return 该元素是否给定集合的成员
-     */
-    public boolean sIsMember(String key, Object value) {
-        return redisTemplate.opsForSet().isMember(key, value);
-    }
-
-    /**
-     * SMEMBER
-     * @param key key
-     * @return 集合的所有元素
-     */
-    public Set<Object> sMember(String key) {
-        return redisTemplate.opsForSet().members(key);
-    }
-
-    /**
-     * SMOVE
-     * @param sourceKey sourceKey
-     * @param destinationKey destinationKey
-     * @return 是否移动成功
-     */
-    public boolean sMove(String sourceKey, Object value, String destinationKey) {
-        return redisTemplate.opsForSet().move(sourceKey, value, destinationKey);
-    }
-
-    /**
-     * SREM
-     * @param key key
-     * @param values values
-     * @return 移除成功的个数
-     */
-    public Long sRem(String key, Object... values) {
-        return redisTemplate.opsForSet().remove(key, values);
-    }
-
-    /**
      * SUNION
      * @param key1 key1
      * @param key2 key2
-     * @return 交集
+     * @return 并集
      */
     public Set<Object> sUnion(String key1, String key2) {
         return redisTemplate.opsForSet().union(key1, key2);
@@ -414,18 +417,20 @@ public class RedisUtil {
     /**
      * ZADD
      * @param key key
-     * @param value value
+     * @param member member
      * @param score score
      * @return 是否添加成功
      */
-    public boolean zAdd(String key, Object value, double score) {
-        return redisTemplate.opsForZSet().add(key, value, score);
+    public boolean zAdd(String key, Object member, double score) {
+        return redisTemplate.opsForZSet().add(key, member, score);
     }
 
     /**
      * ZCARD
      * @param key key
-     * @return length
+     * @return
+     *      key存在且是有序集类型时，返回有序集的基数
+     *      key不存在时，返回 0
      */
     public Long zCard(String key) {
         return redisTemplate.opsForZSet().size(key);
@@ -436,7 +441,7 @@ public class RedisUtil {
      * @param key key
      * @param minScore scoreMin
      * @param maxScore scoreMax
-     * @return length
+     * @return 指定区间成员的数量
      */
     public Long zCount(String key, double minScore, double maxScore) {
         return redisTemplate.opsForZSet().count(key, minScore, maxScore);
@@ -445,12 +450,12 @@ public class RedisUtil {
     /**
      * ZINCRBY
      * @param key key
-     * @param value value
+     * @param member member
      * @param score increment
-     * @return 增加后成员的分数
+     * @return member成员的新score 值
      */
-    public Double zIncrby(String key, Object value, double score) {
-        return redisTemplate.opsForZSet().incrementScore(key, value, score);
+    public Double zIncrby(String key, Object member, double score) {
+        return redisTemplate.opsForZSet().incrementScore(key, member, score);
     }
 
     /**
@@ -458,7 +463,7 @@ public class RedisUtil {
      * @param key key
      * @param start start point
      * @param end end point
-     * @return 指定范围的元素集合
+     * @return 指定区间的元素集合
      */
     public Set<Object> zRange(String key, long start, long end) {
         return redisTemplate.opsForZSet().range(key, start, end);
@@ -475,6 +480,36 @@ public class RedisUtil {
         return redisTemplate.opsForZSet().rangeByScore(key, minScore, maxScore);
     }
 
+    /**
+     * ZREM
+     * @param key key
+     * @param members members
+     * @return 成功移除成员的数量
+     */
+    public Long zRem(String key, Object... members) {
+        return redisTemplate.opsForZSet().remove(key, members);
+    }
+
+    /**
+     * ZREMRANGEBYSCORE
+     * @param key key
+     * @param minScore minScore
+     * @param maxScore maxScore
+     * @return 成功移除成员的数量
+     */
+    public Long zRemRangyScore(String key, double minScore, double maxScore) {
+        return redisTemplate.opsForZSet().removeRangeByScore(key, minScore, maxScore);
+    }
+
+    /**
+     * ZSCORE
+     * @param key key
+     * @param member member
+     * @return 指定成员的分数
+     */
+    public double zScore(String key, Object member) {
+        return redisTemplate.opsForZSet().score(key, member);
+    }
 
 
 
