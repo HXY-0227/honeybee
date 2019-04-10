@@ -1,5 +1,7 @@
 package com.honeybee.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
@@ -9,14 +11,13 @@ import java.util.Calendar;
  */
 public class IDUtil {
 
-    @Autowired
-    private RedisUtil redis;
-
     // 日期格式化标准
     private static final String DATA_FORMAT = "%02d";
 
     // ID格式化标准
     private static final String ID_FORMAT = "%05d";
+
+    private static final Logger logger = LoggerFactory.getLogger(IDUtil.class);
 
     /**
      * 获取当前时间到秒  2019年4月9日23点46分32秒---20190409234632
@@ -25,6 +26,7 @@ public class IDUtil {
     private static String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
 
+        // 获取当前时间并格式化
         int year = calendar.get(Calendar.YEAR);
         String month = String.format(DATA_FORMAT, calendar.get(Calendar.MONTH) + 1);
         String day = String.format(DATA_FORMAT, calendar.get(Calendar.DAY_OF_MONTH));
@@ -32,6 +34,7 @@ public class IDUtil {
         String minute = String.format(DATA_FORMAT, calendar.get(Calendar.MINUTE));
         String second = String.format(DATA_FORMAT, calendar.get(Calendar.SECOND));
 
+        // 返回格式化后的字符串
         return year + month + day + hour + minute + second;
     }
 
@@ -40,10 +43,20 @@ public class IDUtil {
      * @param key key
      * @return ID
      */
-    public Long createId(String key) {
+    public static Long createId(String key) {
+        // 获取RedisUtil实例
+        RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
-        Long increment = redis.incrBy(key, 1);
-        String id = getCurrentTime() + String.format(ID_FORMAT, increment);
-        return Long.valueOf(id);
+        try {
+            // 指定key自增
+            Long increment = redis.incrBy(key, 1);
+            // 生成最终ID
+            String id = getCurrentTime() + String.format(ID_FORMAT, increment);
+            return Long.valueOf(id);
+        } catch (Exception e) {
+            logger.error("create id failed..", e);
+            return 0L;
+        }
+
     }
 }

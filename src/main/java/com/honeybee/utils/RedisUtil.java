@@ -101,6 +101,16 @@ public class RedisUtil {
     }
 
     /**
+     * SETNX
+     * @param key key
+     * @param value value
+     * @return 是否设置成功
+     */
+    public boolean setNx(String key, Object value) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value);
+    }
+
+    /**
      * GET
      * @param key key
      * @return 返回给定的key值
