@@ -65,27 +65,28 @@ public class UserController {
     @ResponseBody
     public HoneyResult checkUser(@PathVariable String param, @PathVariable Integer type) {
 
-        HoneyResult result = null;
-
         // 判断校验内容是否为空
         if (StringUtils.isBlank(param)) {
-            result = HoneyResult.build(400, "check param is not allowed null");
+            logger.info("check param is null...");
+            return HoneyResult.build(400, "check param is not allowed null");
         }
 
         // 判断校验类型是否为空
         if (null == type) {
-            result = HoneyResult.build(400,"check type is not allowed null");
+            logger.info("check type is null...");
+            return HoneyResult.build(400,"check type is not allowed null");
         }
 
-        // 判断校验类型是否为用户名、电话、邮箱、密码   需要封装成枚举类型的常量
-        if (type != 1 && type != 2 && type != 3 && type != 4) {
-            result = HoneyResult.build(400,"check param error");
+        // 判断校验类型是否为用户名、电话、密码   需要封装成枚举类型的常量
+        if (type != 1 && type != 2 && type != 3) {
+            logger.info("check type error");
+            return HoneyResult.build(400,"check param error");
         }
 
+        logger.info("param check successfully...");
         // 调用service层校验
-        result = userService.checkUser(param, type);
+        return userService.checkUser(param, type);
 
-        return result;
     }
 
 }
