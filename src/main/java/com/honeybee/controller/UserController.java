@@ -83,7 +83,6 @@ public class UserController {
             return HoneyResult.build(400,"check param error");
         }
 
-        logger.info("param check successfully...");
         // 调用service层校验
         return userService.checkUser(param, type);
 

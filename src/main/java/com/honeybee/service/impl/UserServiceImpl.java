@@ -40,7 +40,11 @@ public class UserServiceImpl implements UserService {
     private static final String PASSWORD_REGEX = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{6,12}$";
 
     // 电话号码正则表达式
-    private static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\\\d{8}$";
+    private static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+
+    // log
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     private UserMapper userMapper;
 
@@ -87,11 +91,14 @@ public class UserServiceImpl implements UserService {
 
             // 用户名不能大于128位
             if (param.length() > MAX_LENGTH) {
+
+                logger.info("username checked failure...");
                 return HoneyResult.build(400,"username does't allowed more than 128 characters");
             }
 
             // 校验用户名内容
             if (!param.matches(USER_NAME_REGEX)) {
+                logger.info("username checked failure...");
                 return HoneyResult.build(400, "username does't contain illegal characters");
             }
         }
@@ -101,6 +108,7 @@ public class UserServiceImpl implements UserService {
 
             // 校验密码只能包含字母数字，且长度介于6-12
             if (!param.matches(PASSWORD_REGEX)) {
+                logger.info("password checked failure...");
                 return HoneyResult.build(400,"password can only contain numbers and letters and length between 6 and 12");
             }
         }
@@ -109,10 +117,12 @@ public class UserServiceImpl implements UserService {
         if (type == 3) {
 
             if (!param.matches(PHONE_REGEX)) {
-                return HoneyResult.build(400, "please correct phone number");
+                logger.info("phone checked failure...");
+                return HoneyResult.build(400, "please input correct phone number");
             }
         }
 
+        logger.info("param check successfully...");
         return HoneyResult.ok();
     }
 
