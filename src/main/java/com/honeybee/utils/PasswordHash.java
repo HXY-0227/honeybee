@@ -52,10 +52,10 @@ public class PasswordHash {
     private static final int PBKDF2_ITERATIONS = 1000;
 
     // 盐值索引
-    public static final int SALT_INDEX = 0;
+    private static final int SALT_INDEX = 0;
 
     // 哈希值索引
-    public static final int PBKDF2_INDEX = 1;
+    private static final int PBKDF2_INDEX = 1;
 
     /**
      * 校验密码

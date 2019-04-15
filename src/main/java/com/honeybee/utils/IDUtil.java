@@ -43,7 +43,7 @@ public class IDUtil {
      * @param key key
      * @return ID
      */
-    public static Long createId(String key) {
+    public static String createId(String key) {
         // 获取RedisUtil实例
         RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
@@ -52,10 +52,10 @@ public class IDUtil {
             Long increment = redis.incrBy(key, 1);
             // 生成最终ID
             String id = getCurrentTime() + String.format(ID_FORMAT, increment);
-            return Long.valueOf(id);
+            return id;
         } catch (Exception e) {
             logger.error("create id failed..", e);
-            return 0L;
+            return "";
         }
 
     }

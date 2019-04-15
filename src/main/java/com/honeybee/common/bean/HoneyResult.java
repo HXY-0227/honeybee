@@ -1,6 +1,7 @@
 package com.honeybee.common.bean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.honeybee.utils.HoneybeeConstants;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,22 +28,13 @@ public class HoneyResult implements Serializable {
     //响应中的数据
     private Object data;
 
-    //正常状态码
-    public static final int OK_STATE = 200;
-
-    //异常状态码
-    public static final int ERR_STATE = 500;
-
-    //正常相应信息
-    public static final String OK_MESSAGE = "OK";
-
     /**
      * 正常的构造函数
      * @param data 返回的数据
      */
     public HoneyResult(Object data) {
-        this.status = OK_STATE;
-        this.msg = OK_MESSAGE;
+        this.status = HoneybeeConstants.HttpStatusCode.OK.getCode();
+        this.msg = HoneybeeConstants.HttpStatusCode.OK.getMessage();
         this.data = data;
     }
 

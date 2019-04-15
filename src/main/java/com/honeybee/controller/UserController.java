@@ -3,6 +3,7 @@ package com.honeybee.controller;
 import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
 import com.honeybee.service.UserService;
+import com.honeybee.utils.HoneybeeConstants;
 import com.honeybee.utils.IDUtil;
 import com.honeybee.utils.JsonUtil;
 import com.honeybee.utils.RedisUtil;
@@ -62,25 +63,28 @@ public class UserController {
      * @return 校验结果
      */
     @GetMapping("/check/{param}/{type}")
-    @ResponseBody
     public HoneyResult checkUser(@PathVariable String param, @PathVariable Integer type) {
 
         // 判断校验内容是否为空
         if (StringUtils.isBlank(param)) {
             logger.info("check param is null...");
-            return HoneyResult.build(400, "check param is not allowed null");
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "check param is not allowed null");
         }
 
         // 判断校验类型是否为空
         if (null == type) {
             logger.info("check type is null...");
-            return HoneyResult.build(400,"check type is not allowed null");
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "check type is not allowed null");
         }
 
-        // 判断校验类型是否为用户名、电话、密码   需要封装成枚举类型的常量
-        if (type != 1 && type != 2 && type != 3) {
+        // 判断校验类型是否为用户名、电话、密码
+        if (type != HoneybeeConstants.UserCode.CHECK_USERNAME && type != HoneybeeConstants.UserCode.CHECK_PASSWORD
+                && type != HoneybeeConstants.UserCode.CHECK_PHONE) {
             logger.info("check type error");
-            return HoneyResult.build(400,"check param error");
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "check param error");
         }
 
         // 调用service层校验

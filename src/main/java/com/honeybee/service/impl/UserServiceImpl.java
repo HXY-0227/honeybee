@@ -4,6 +4,7 @@ import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
 import com.honeybee.dao.UserMapper;
 import com.honeybee.service.UserService;
+import com.honeybee.utils.HoneybeeConstants;
 import com.honeybee.utils.IDUtil;
 import com.honeybee.utils.PasswordHash;
 import org.apache.commons.lang3.StringUtils;
@@ -87,38 +88,42 @@ public class UserServiceImpl implements UserService {
     public HoneyResult checkUser(String param, Integer type) {
 
         // 校验用户名
-        if (type == 1) {
+        if (type == HoneybeeConstants.UserCode.CHECK_USERNAME) {
 
             // 用户名不能大于128位
             if (param.length() > MAX_LENGTH) {
 
                 logger.info("username checked failure...");
-                return HoneyResult.build(400,"username does't allowed more than 128 characters");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username does't allowed more than 128 characters");
             }
 
             // 校验用户名内容
             if (!param.matches(USER_NAME_REGEX)) {
                 logger.info("username checked failure...");
-                return HoneyResult.build(400, "username does't contain illegal characters");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username does't contain illegal characters");
             }
         }
 
         // 校验密码
-        if (type == 2) {
+        if (type == HoneybeeConstants.UserCode.CHECK_PASSWORD) {
 
             // 校验密码只能包含字母数字，且长度介于6-12
             if (!param.matches(PASSWORD_REGEX)) {
                 logger.info("password checked failure...");
-                return HoneyResult.build(400,"password can only contain numbers and letters and length between 6 and 12");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "password can only contain numbers and letters and length between 6 and 12");
             }
         }
 
         // 校验电话号码
-        if (type == 3) {
+        if (type == HoneybeeConstants.UserCode.CHECK_PHONE) {
 
             if (!param.matches(PHONE_REGEX)) {
                 logger.info("phone checked failure...");
-                return HoneyResult.build(400, "please input correct phone number");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "please input correct phone number");
             }
         }
 
