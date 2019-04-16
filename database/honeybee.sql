@@ -1,5 +1,5 @@
 CREATE TABLE `team_info` (
-  `team_id` int(10) NOT NULL,
+  `team_id` int(19) NOT NULL,
   `team_name` varchar(15) NOT NULL COMMENT '团队名',
   `user_name` varchar(15) NOT NULL COMMENT '用户名',
   `captial` float DEFAULT NULL COMMENT '资金',
@@ -7,9 +7,9 @@ CREATE TABLE `team_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='团队信息表';
 
 CREATE TABLE `user_info` (
-  `user_id` int NOT NULL,
-  `user_name` varchar(15) NOT NULL COMMENT '用户名',
-  `user_password` varchar(30) NOT NULL COMMENT '用户密码',
+  `user_id` varchar(20) NOT NULL,
+  `user_name` varchar(128) NOT NULL COMMENT '用户名',
+  `user_password` varchar(100) NOT NULL COMMENT '用户密码',
   `user_phone` varchar(11) DEFAULT NULL COMMENT '用户电话',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
