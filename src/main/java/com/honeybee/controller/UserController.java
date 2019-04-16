@@ -4,16 +4,11 @@ import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
 import com.honeybee.service.UserService;
 import com.honeybee.utils.HoneybeeConstants;
-import com.honeybee.utils.IDUtil;
-import com.honeybee.utils.JsonUtil;
-import com.honeybee.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.SecureRandom;
 
 /**
  * userController
@@ -26,9 +21,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RedisUtil redis;
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -67,7 +59,8 @@ public class UserController {
         }
 
         // 判断校验类型是否为用户名、电话、密码
-        if (type != HoneybeeConstants.UserCode.CHECK_USERNAME && type != HoneybeeConstants.UserCode.CHECK_PASSWORD
+        if (type != HoneybeeConstants.UserCode.CHECK_USERNAME
+                && type != HoneybeeConstants.UserCode.CHECK_PASSWORD
                 && type != HoneybeeConstants.UserCode.CHECK_PHONE) {
             logger.info("check type error");
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),

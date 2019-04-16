@@ -82,7 +82,8 @@ public class PasswordHash {
      * @param password  用户输入的密码
      * @return  加盐密码后经过PBKDF2加密得到的hash值
      */
-    public static String createHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static String createHash(String password)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         //使用安全随机数生成盐值
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_BYTE_SIZE];
@@ -101,7 +102,8 @@ public class PasswordHash {
      * @param bytes 生成的hash长度
      * @return 加密后得到的hash值
      */
-    private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         PBEKeySpec pbeKeySpec = new PBEKeySpec(password, salt, iterations, bytes);
         SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
         return factory.generateSecret(pbeKeySpec).getEncoded();
