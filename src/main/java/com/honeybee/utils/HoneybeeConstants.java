@@ -3,8 +3,6 @@ package com.honeybee.utils;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.swing.plaf.PanelUI;
-
 /**
  * 常量类
  * @author HXY

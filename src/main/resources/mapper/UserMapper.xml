@@ -3,9 +3,9 @@
 <mapper namespace="com.honeybee.dao.UserMapper">
     <resultMap id="user" type="com.honeybee.common.bean.UserBean">
         <id column="user_id"  property="userId"></id>
+        <result column="user_name" property="name"></result>
         <result column="user_password" property="password"></result>
         <result column="user_phone" property="phone"></result>
-        <result column="user_name" property="name"></result>
         <result column="create_time" property="createTime"></result>
         <result column="update_time" property="updateTime"></result>
     </resultMap>
@@ -13,20 +13,20 @@
     <!-- 根据电话查找用户
     <select id="selectByUserPhone" parameterType="String" resultMap="user">
         SELECT u.phone,u.name,u.createTime,u.updateTime
-        FROM user_table u
+        FROM user_info u
         WHERE u.user_phone=#{phone}
     </select> -->
 
     <!-- 根据用户名查找用户 -->
     <select id="selectByUserName" parameterType="String" resultMap="user">
         SELECT u.user_name,u.user_phone,u.create_time,u.update_time
-        FROM user_table u
+        FROM user_info u
         WHERE u.user_name=#{name}
     </select>
 
-    <!-- 注册用户
-    <insert id="insertUser" parameterType="UserBean">
-        INSERT INTO user_table (user_id,user_password,user_phone,user_name,create_time,update_time)
+    <!-- 注册用户 -->
+    <insert id="userRegister" parameterType="UserBean">
+        INSERT INTO user_info (user_id,user_password,user_phone,user_name,create_time,update_time)
         VALUES (#{userId},#{password},#{phone},#{name},#{createTime},#{updateTime})
-    </insert> -->
+    </insert>
 </mapper>

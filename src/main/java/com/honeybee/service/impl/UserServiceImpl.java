@@ -25,9 +25,6 @@ import java.util.Date;
 @Service(value = "userService")
 public class UserServiceImpl implements UserService {
 
-    // 日志
-    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
-
     // userId
     private static final String USER_ID = "USER_ID";
 
@@ -49,20 +46,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    /*@Override
-    public UserBean select() {
-        try {
-            return userMapper.selectByUserName("HXY");
-        }catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
-    }
-
-    *//**
+    /**
      * 用户注册
      * @return
-     *//*
+     */
     @Override
     public HoneyResult userRegister(UserBean user) throws Exception {
 
@@ -76,8 +63,11 @@ public class UserServiceImpl implements UserService {
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
 
+        // 持久化用户信息
+        userMapper.userRegister(user);
+        
         return HoneyResult.ok();
-    }*/
+    }
 
     /**
      * 用户数据校验，在用户输入后就立马校验

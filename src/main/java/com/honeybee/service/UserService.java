@@ -1,6 +1,11 @@
 package com.honeybee.service;
 
+import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
+import org.apache.commons.lang3.StringUtils;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  * @author HXY
@@ -8,25 +13,20 @@ import com.honeybee.common.bean.UserBean;
  */
 public interface UserService {
 
-    /**
-     * 检查数据是否可用
-     * @return
-     */
-    //public HoneyResult checkData();
 
     /**
      * 用户注册
-     * @return
+     * @return 是否注册成功的结果
      */
-    //public HoneyResult register(UserBean user);
+    public HoneyResult userRegister(UserBean user) throws Exception;
 
     /**
-     * 用户登录
-     * @return
+     * 校验用户输入
+     * @param param 待校验参数
+     * @param type 校验类型
+     * @return 校验结果
      */
-    //public HoneyResult login(String phone, String password);
-
-    public UserBean select();
+    public HoneyResult checkUser(String param, Integer type);
 
 
 }

@@ -32,29 +32,16 @@ public class UserController {
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    /*@GetMapping("/select")
-    @ResponseBody
-    public Object xxxx() {
-
-        IDUtil util = new IDUtil();
-        logger.info("开始set....");
-        //Long userId = util.createId("userId");
-        //logger.info("get...：" + userId);
-        return null;
-
-    }
-
-    *//**
+    /**
      * 用户注册
      * @return
-     *//*
+     */
     @PostMapping("/user/register")
-    @ResponseBody
-    public HoneyResult userRegister(UserBean user) throws Exception {
+    public HoneyResult userRegister(@RequestBody UserBean user) throws Exception {
 
         HoneyResult honeyResult = userService.userRegister(user);
         return honeyResult;
-    }*/
+    }
 
     /**
      * ajax校验用户输入

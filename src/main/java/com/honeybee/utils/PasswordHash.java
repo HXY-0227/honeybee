@@ -63,7 +63,8 @@ public class PasswordHash {
      * @param saltAndHash 加密信息
      * @return  校验结果
      */
-    public static boolean validatePassword(String password, String saltAndHash) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static boolean validatePassword(String password, String saltAndHash)
+            throws InvalidKeySpecException, NoSuchAlgorithmException {
         // 获取加密用的盐值和加密后正确的hash
         String[] params = saltAndHash.split(":");
         byte[] salt = fromHex(params[SALT_INDEX]);
