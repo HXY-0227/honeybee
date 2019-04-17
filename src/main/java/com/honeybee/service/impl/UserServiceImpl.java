@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户注册
-     * @return
+     * @param user 用户信息
+     * @return 注册结果
      */
     @Override
     public HoneyResult userRegister(UserBean user) throws Exception {
@@ -65,7 +66,33 @@ public class UserServiceImpl implements UserService {
 
         // 持久化用户信息
         userMapper.userRegister(user);
-        
+
+        return HoneyResult.ok();
+    }
+
+    /**
+     * 用户登录
+     * @param userName 用户名
+     * @param password 用户密码
+     * @return
+     */
+    @Override
+    public HoneyResult userLogin(String userName, String password) throws Exception {
+        // 查询用户信息
+        UserBean user = userMapper.selectUserByName(userName);
+
+        // 没有用户
+        if (null == user) {
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "username or password error");
+        }
+
+        // 校验密码
+        if (PasswordHash.validatePassword(password, user.getPassword())) {
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "username or password error");
+        }
+
         return HoneyResult.ok();
     }
 

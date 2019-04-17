@@ -17,4 +17,11 @@ public interface UserMapper {
      */
     int userRegister(UserBean user);
 
+    /**
+     * 根据用户名查找用户
+     * @param userName 用户名
+     * @return user 用户对象
+     */
+    UserBean selectUserByName(String userName);
+
 }

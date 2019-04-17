@@ -39,7 +39,7 @@ import java.security.spec.InvalidKeySpecException;
  */
 public class PasswordHash {
 
-    //加密算法
+    // 加密算法
     private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     // 盐值长度
@@ -48,7 +48,7 @@ public class PasswordHash {
     // 哈希长度
     private static final int HASH_BYTE_SIZE = 192;
 
-    //迭代次数，最少1000次
+    // 迭代次数，最少1000次
     private static final int PBKDF2_ITERATIONS = 1000;
 
     // 盐值索引
@@ -56,6 +56,9 @@ public class PasswordHash {
 
     // 哈希值索引
     private static final int PBKDF2_INDEX = 1;
+
+    // 盐值和哈希分隔符
+    private static final String SEPARATOR = ":";
 
     /**
      * 校验密码
@@ -66,7 +69,7 @@ public class PasswordHash {
     public static boolean validatePassword(String password, String saltAndHash)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
         // 获取加密用的盐值和加密后正确的hash
-        String[] params = saltAndHash.split(":");
+        String[] params = saltAndHash.split(SEPARATOR);
         byte[] salt = fromHex(params[SALT_INDEX]);
         byte[] correctHash = fromHex(params[PBKDF2_INDEX]);
 
@@ -91,7 +94,7 @@ public class PasswordHash {
 
         // 通过pbkdf2对密码加密
         byte[] hash = pbkdf2(password.toCharArray(), salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
-        return toHex(salt) + ":" + toHex(hash);
+        return toHex(salt) + SEPARATOR + toHex(hash);
     }
 
     /**

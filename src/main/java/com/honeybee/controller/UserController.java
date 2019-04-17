@@ -25,8 +25,19 @@ public class UserController {
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
+     * 用户登录
+     * @param userName 用户名
+     * @param password 用户密码
+     * @return 登录结果
+     */
+    @PostMapping("/user/login")
+    public HoneyResult userLogin(String userName, String password) throws Exception {
+
+        return userService.userLogin(userName, password);
+    }
+    /**
      * 用户注册
-     * @return
+     * @return 注册结果
      */
     @PostMapping("/user/register")
     public HoneyResult userRegister(@RequestBody UserBean user) throws Exception {
