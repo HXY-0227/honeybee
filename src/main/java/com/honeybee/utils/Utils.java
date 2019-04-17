@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 /**
  * 工具类
  * @author HXY
+ * @version 1.0
  */
 public class Utils {
 
@@ -15,8 +16,9 @@ public class Utils {
      */
     public static String createToken(int length) {
 
-        //token
+        // token
         StringBuffer token = new StringBuffer();
+        // 采用安全随机数
         SecureRandom random = new SecureRandom();
 
         for (int i = 0; i < length; i++) {

@@ -17,6 +17,9 @@ public class IDUtil {
     // ID格式化标准
     private static final String ID_FORMAT = "%05d";
 
+    // incr命令增长步长
+    private static final int ID_INCREMENT = 1;
+
     private static final Logger logger = LoggerFactory.getLogger(IDUtil.class);
 
     /**
@@ -49,12 +52,13 @@ public class IDUtil {
 
         try {
             // 指定key自增
-            Long increment = redis.incrBy(key, 1);
+            Long result = redis.incrBy(key, ID_INCREMENT);
             // 生成最终ID
-            String id = getCurrentTime() + String.format(ID_FORMAT, increment);
+            String id = getCurrentTime() + String.format(ID_FORMAT, result);
             return id;
         } catch (Exception e) {
             logger.error("create id failed..", e);
+            // TODO 补充异常情况下id生成策略
             return "";
         }
 

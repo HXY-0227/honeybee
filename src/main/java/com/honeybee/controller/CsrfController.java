@@ -21,6 +21,11 @@ public class CsrfController {
 
     private final static Logger logger = LoggerFactory.getLogger(CsrfController.class);
 
+    // token长度
+    private final static int TOKEN_LENGTH = 128;
+
+    // token
+    private final static String TOKEN = "token";
     /**
      * 在服务端保存token，并将生成的token返回到前台
      * @param request
@@ -30,8 +35,8 @@ public class CsrfController {
     @ResponseBody
     public HoneyResult createToken(HttpServletRequest request) {
         logger.info("begin create csrfToken...");
-        String token = Utils.createToken(128);
-        request.getSession().setAttribute("token",token);
+        String token = Utils.createToken(TOKEN_LENGTH);
+        request.getSession().setAttribute(TOKEN, token);
         logger.info("end create csrfToken...");
         return new HoneyResult(token);
 

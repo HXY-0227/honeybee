@@ -22,10 +22,10 @@ public class HoneyResult implements Serializable {
     //响应状态码
     private Integer status;
 
-    //响应业务状态
+    //响应信息
     private String msg;
 
-    //响应中的数据
+    //响应数据
     private Object data;
 
     /**
@@ -33,7 +33,9 @@ public class HoneyResult implements Serializable {
      * @param data 返回的数据
      */
     public HoneyResult(Object data) {
+        // 200
         this.status = HoneybeeConstants.HttpStatusCode.OK.getCode();
+        // OK
         this.msg = HoneybeeConstants.HttpStatusCode.OK.getMessage();
         this.data = data;
     }
