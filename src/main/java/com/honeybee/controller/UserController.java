@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * userController
  * @author HXY
@@ -31,10 +34,21 @@ public class UserController {
      * @return 登录结果
      */
     @PostMapping("/user/login")
-    public HoneyResult userLogin(String userName, String password) throws Exception {
+    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
 
-        return userService.userLogin(userName, password);
+        return userService.userLogin(userName, password, request, response);
     }
+
+    /**
+     * 根据token查询用户信息
+     * @return
+     */
+    @RequestMapping("/token/{token}")
+    public HoneyResult getUserByToken(@PathVariable String token) {
+        return userService.getUserByToken(token);
+    }
+
     /**
      * 用户注册
      * @return 注册结果

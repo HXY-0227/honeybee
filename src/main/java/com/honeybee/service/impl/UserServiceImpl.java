@@ -4,9 +4,7 @@ import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
 import com.honeybee.dao.UserMapper;
 import com.honeybee.service.UserService;
-import com.honeybee.utils.HoneybeeConstants;
-import com.honeybee.utils.IDUtil;
-import com.honeybee.utils.PasswordHash;
+import com.honeybee.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author HXY
@@ -40,8 +41,17 @@ public class UserServiceImpl implements UserService {
     // 电话号码正则表达式
     private static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
 
+    // token长度
+    private static final int TOKEN_LENGTH = 16;
+
+    // token名
+    private static final String REDIS_USER_SESSION_KEY = "REDIS_USER_SESSION_KEY";
+
     // log
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    // 获取RedisUtil实例
+    RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -77,23 +87,59 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public HoneyResult userLogin(String userName, String password) throws Exception {
+    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
         // 查询用户信息
         UserBean user = userMapper.selectUserByName(userName);
 
         // 没有用户
         if (null == user) {
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
-                    "username or password error");
+                    "username or password error...");
+        }
+
+        // 用户名是否存在
+        if (userName.equals(user.getName())) {
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "username already exist...");
         }
 
         // 校验密码
         if (PasswordHash.validatePassword(password, user.getPassword())) {
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
-                    "username or password error");
+                    "username or password error...");
         }
 
-        return HoneyResult.ok();
+        // 生成一个token
+        String token = Utils.createToken(TOKEN_LENGTH);
+        // 清空用户密码
+        user.setPassword(null);
+        // 将用户名存储在redis中
+        redis.set(REDIS_USER_SESSION_KEY + ":" + token, user.getName());
+        // 设置用户名过期时间
+        redis.expire(REDIS_USER_SESSION_KEY + ":" + token, 1800L, TimeUnit.SECONDS);
+        // 将token设置到cookie中，带回客户端
+        CookieUtil.doSetCookie(request, response, "", token);
+
+        return HoneyResult.ok(token);
+    }
+
+    /**
+     * 根据token获取用户信息
+     * @param token
+     * @return
+     */
+    public HoneyResult getUserByToken(String token) {
+
+        // 查询redis，获取用户名
+        String userName = (String) redis.get(REDIS_USER_SESSION_KEY + ":" + token);
+
+        if (StringUtils.isBlank(userName)) {
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "session expired");
+        }
+
+        return HoneyResult.ok(userName);
     }
 
     /**
