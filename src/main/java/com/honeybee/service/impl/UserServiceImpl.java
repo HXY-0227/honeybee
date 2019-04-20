@@ -50,8 +50,6 @@ public class UserServiceImpl implements UserService {
     // log
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    // 获取RedisUtil实例
-    RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -89,6 +87,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        // 获取RedisUtil实例
+        RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
+
         // 查询用户信息
         UserBean user = userMapper.selectUserByName(userName);
 
@@ -130,6 +131,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     public HoneyResult getUserByToken(String token) {
+        // 获取RedisUtil实例
+        RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
         // 查询redis，获取用户名
         String userName = (String) redis.get(REDIS_USER_SESSION_KEY + ":" + token);
