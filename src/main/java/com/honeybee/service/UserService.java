@@ -4,6 +4,8 @@ import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -26,7 +28,15 @@ public interface UserService {
      * @param userName 用户名
      * @param password 用户密码
      */
-    public HoneyResult userLogin(String userName, String password) throws Exception;
+    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+            throws Exception;
+
+    /**
+     * 根据token获取用户信息
+     * @param token
+     * @return
+     */
+    public HoneyResult getUserByToken(String token);
 
     /**
      * 校验用户输入
