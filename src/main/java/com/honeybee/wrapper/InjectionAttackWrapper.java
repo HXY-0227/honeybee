@@ -82,7 +82,7 @@ public class InjectionAttackWrapper extends HttpServletRequestWrapper {
      * @param name key
      * @return 过滤后的value
      */
-    @Override
+    /*@Override
     public String[] getParameterValues(String name) {
         //调用父类方法，获取原始的value
         String[] parameterValues = super.getParameterValues(name);
@@ -92,7 +92,7 @@ public class InjectionAttackWrapper extends HttpServletRequestWrapper {
             filteredValues[i] = filterParamString(parameterValues[i]);
         }
         return filteredValues;
-    }
+    }*/
 
     /**
      * 重写getCookies方法

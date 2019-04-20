@@ -29,22 +29,21 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param userName 用户名
-     * @param password 用户密码
+     * @param user 用户
      * @return 登录结果
      */
     @PostMapping("/user/login")
-    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+    public HoneyResult userLogin(@RequestBody UserBean user, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        return userService.userLogin(userName, password, request, response);
+        return userService.userLogin(user, request, response);
     }
 
     /**
      * 根据token查询用户信息
      * @return
      */
-    @RequestMapping("/token/{token}")
+    @GetMapping("/token/{token}")
     public HoneyResult getUserByToken(@PathVariable String token) {
         return userService.getUserByToken(token);
     }

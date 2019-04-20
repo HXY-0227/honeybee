@@ -25,10 +25,9 @@ public interface UserService {
 
     /**
      * 用户登录
-     * @param userName 用户名
-     * @param password 用户密码
+     * @param user 用户
      */
-    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+    public HoneyResult userLogin(UserBean user, HttpServletRequest request, HttpServletResponse response)
             throws Exception;
 
     /**
