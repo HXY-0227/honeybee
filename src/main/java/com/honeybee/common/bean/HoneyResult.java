@@ -61,6 +61,15 @@ public class HoneyResult implements Serializable {
     }
 
     /**
+     * 正常返回数据
+     * @param data
+     * @return
+     */
+    public static HoneyResult ok(Object data) {
+        return new HoneyResult(data);
+    }
+
+    /**
      * 异常不返回数据
      * @return
      */
