@@ -10,6 +10,7 @@ CREATE TABLE `user_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 
+
 CREATE TABLE `user_account` (
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
   `total_money` double(20,0) DEFAULT NULL COMMENT '用户总金额',
