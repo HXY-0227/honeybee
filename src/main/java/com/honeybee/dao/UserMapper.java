@@ -15,20 +15,13 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    //int insertUser(UserBean user);
+    int userRegister(UserBean user);
 
     /**
      * 根据用户名查找用户
-     * @param userNme
-     * @return
+     * @param userName 用户名
+     * @return user 用户对象
      */
-    UserBean selectByUserName(String name);
-
-    /**
-     * 根据电话查找用户
-     * @param phone
-     * @return
-     */
-    //UserBean selectByUserPhone(String phone);
+    UserBean selectUserByName(String userName);
 
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
  * 防止csrf攻击的过滤器
  * @author HXY
  */
-@WebFilter(urlPatterns = "/*", filterName = "csrfFilter")
+@WebFilter(urlPatterns = "/xxx", filterName = "csrfFilter")
 public class CsrfFilter extends OncePerRequestFilter {
 
     private final static String REQUEST_METHOD_POST = "POST";

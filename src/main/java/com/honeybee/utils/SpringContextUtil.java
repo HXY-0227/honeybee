@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 获取spring上下文工具类
+ * @author HXY
+ * @version 1.0
  */
 @Component
 public class SpringContextUtil implements ApplicationContextAware {
@@ -28,7 +30,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     }
 
     /**
-     * 单例模式保证创建唯一实例
+     * 双重锁校验的单例模式保证创建唯一实例
      * @return SpringContextUtil实例
      */
     public static SpringContextUtil getInstance() {
