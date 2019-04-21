@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.honeybee.dao.CustomerInfoMapper">
+
+    <resultMap id="CustomerInfoBase" type="com.honeybee.common.bean.CustomerInfoBean">
+        <result column="new_Member"  property="newMember"></result>
+        <result column="total_Profit" property="totalProfit"></result>
+    </resultMap>
+
+
+    <resultMap id="CustomerYearInfoBase" type="com.honeybee.common.bean.CustomerYearInfoBean">
+        <result column="monthTime" property="time"></result>
+        <result column="new_Member"  property="newMember"></result>
+        <result column="total_Profit" property="totalProfit"></result>
+    </resultMap>
+
+    <!-- 查询总金额 -->
+    <select id="queryTotalMember" parameterType="String" resultType="String">
+        select  count(1) from  customer_info where user_id=#{userId}
+    </select>
+
+    <!-- 根据时间点查询客户的信息 -->
+    <select id="queryCustomerInfo" parameterType="map" resultMap="CustomerInfoBase">
+        select  count(customer_id) new_Member ,sum(total_money) total_Profit from  customer_info where userId=#{userId}
+        and create_time>=#{firstDay}
+        and create_time<![CDATA[<=]]>#{day}
+    </select>
+
+
+    <!-- 根据时间点查询客户近一年的信息 -->
+    <select id="queryCustomerYearInfo" parameterType="map" resultMap="CustomerYearInfoBase">
+        SELECT
+        count(customer_id) newMember,
+        sum(total_money) totalProfit,
+        t.create_time monthTime
+        FROM
+        (
+        SELECT
+        user_id,
+        customer_id,
+        customer_name,
+        customer_phone,
+        total_money,
+        date_format(create_time, '%Y-%m') create_time
+        FROM
+        customer_info
+        WHERE
+        create_time create_time<![CDATA[<=]]>#{day}
+        AND create_time>=#{firstDay}
+        AND user_id =  userId=#{userId}
+        ) t
+        GROUP BY
+        create_time
+    </select>
+
+
+
+
+</mapper>
