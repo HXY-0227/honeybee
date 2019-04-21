@@ -2,8 +2,10 @@ package com.honeybee.service.impl;
 
 import com.honeybee.common.bean.CustomerBean;
 import com.honeybee.common.bean.HoneyResult;
+import com.honeybee.common.bean.UserBean;
 import com.honeybee.dao.CustomerMapper;
 import com.honeybee.service.CustomerService;
+import com.honeybee.utils.HoneybeeConstants;
 import com.honeybee.utils.IDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,64 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public HoneyResult checkCustomer(String param, Integer type) {
 
+        // 校验用户名
+        if (type == HoneybeeConstants.CheckCode.CHECK_USERNAME) {
 
+            CustomerBean result = customerMapper.selectCustomerByName(param);
+
+            // 用户名是否存在
+            if (null != result) {
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username already exist...");
+            }
+
+            // 用户名不能大于128位
+            if (param.length() > HoneybeeConstants.Regex.MAX_LENGTH) {
+
+                logger.info("username checked failure...");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username does't allowed more than 128 characters");
+            }
+
+            // 校验用户名内容
+            if (!param.matches(HoneybeeConstants.Regex.USER_NAME_REGEX)) {
+                logger.info("username checked failure...");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username does't contain illegal characters");
+            }
+        }
+
+        // 校验电话号码
+        if (type == HoneybeeConstants.CheckCode.CHECK_PHONE) {
+
+            if (!param.matches(HoneybeeConstants.Regex.PHONE_REGEX)) {
+                logger.info("phone checked failure...");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "please input correct phone number");
+            }
+        }
+
+        // 校验电话号码
+        if (type == HoneybeeConstants.CheckCode.CHECK_MONEY) {
+
+            if (!param.matches(HoneybeeConstants.Regex.PHONE_REGEX)) {
+                logger.info("phone checked failure...");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "please input correct phone number");
+            }
+        }
+
+        // 校验客户金额
+        if (type == HoneybeeConstants.CheckCode.CHECK_MONEY) {
+
+            if (!param.matches(HoneybeeConstants.Regex.MONEY_REGEX)) {
+                logger.info("total money checked failure...");
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "please input correct money");
+            }
+        }
+
+        logger.info("param check successfully...");
         return HoneyResult.ok();
     }
 
