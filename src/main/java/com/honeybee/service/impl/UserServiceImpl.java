@@ -32,12 +32,6 @@ public class UserServiceImpl implements UserService {
     // token名
     private static final String REDIS_USER_SESSION_KEY = "REDIS:USER:SESSION:KEY";
 
-    // token过期时间
-    private static final int TOKEN_EXPIRE = 1;
-
-    // token名
-    private static final String TOKEN_NAME = "HONEY_TOKEN";
-
     // log
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -71,17 +65,18 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录
-     * @param user 用户
+     * @param userName 用户名
+     * @param password 用户密码
      * @return
      */
     @Override
-    public HoneyResult userLogin(UserBean user, HttpServletRequest request, HttpServletResponse response)
+    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         // 获取RedisUtil实例
         RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
         // 查询用户信息
-        UserBean result = userMapper.selectUserByName(user.getName());
+        UserBean user = userMapper.selectUserByName(userName);
 
         // 没有用户
         if (null == user) {
@@ -89,8 +84,14 @@ public class UserServiceImpl implements UserService {
                     "username or password error...");
         }
 
+        // 用户名是否存在
+        if (userName.equals(user.getName())) {
+            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                    "username already exist...");
+        }
+
         // 校验密码
-        if (!PasswordHash.validatePassword(user.getPassword(), result.getPassword())) {
+        if (PasswordHash.validatePassword(password, user.getPassword())) {
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                     "username or password error...");
         }
@@ -100,11 +101,11 @@ public class UserServiceImpl implements UserService {
         // 清空用户密码
         user.setPassword(null);
         // 将用户名存储在redis中
-        redis.set(REDIS_USER_SESSION_KEY + ":" + token, result.getUserId());
+        redis.set(REDIS_USER_SESSION_KEY + ":" + token, user.getName());
         // 设置用户名过期时间
-        redis.expire(REDIS_USER_SESSION_KEY + ":" + token, TOKEN_EXPIRE, TimeUnit.DAYS);
+        redis.expire(REDIS_USER_SESSION_KEY + ":" + token, 1800L, TimeUnit.SECONDS);
         // 将token设置到cookie中，带回客户端
-        CookieUtil.doSetCookie(request, response, TOKEN_NAME, token);
+        CookieUtil.doSetCookie(request, response, "", token);
 
         return HoneyResult.ok(token);
     }
@@ -119,15 +120,15 @@ public class UserServiceImpl implements UserService {
         // 获取RedisUtil实例
         RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
-        // 查询redis，获取用户id
-        String userId = (String) redis.get(REDIS_USER_SESSION_KEY + ":" + token);
+        // 查询redis，获取用户名
+        String userName = (String) redis.get(REDIS_USER_SESSION_KEY + ":" + token);
 
-        if (StringUtils.isBlank(userId)) {
+        if (StringUtils.isBlank(userName)) {
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                     "session expired");
         }
 
-        return HoneyResult.ok(userId);
+        return HoneyResult.ok(token);
     }
 
     /**
@@ -141,14 +142,6 @@ public class UserServiceImpl implements UserService {
 
         // 校验用户名
         if (type == HoneybeeConstants.CheckCode.CHECK_USERNAME) {
-
-            UserBean result = userMapper.selectUserByName(param);
-
-            // 用户名是否存在
-            if (null != result) {
-                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
-                        "username already exist...");
-            }
 
             // 用户名不能大于128位
             if (param.length() > HoneybeeConstants.Regex.MAX_LENGTH) {
