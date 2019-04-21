@@ -10,12 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +42,13 @@ public class UserServiceImpl implements UserService {
     private static final int TOKEN_LENGTH = 16;
 
     // token名
-    private static final String REDIS_USER_SESSION_KEY = "REDIS_USER_SESSION_KEY";
+    private static final String REDIS_USER_SESSION_KEY = "REDIS:USER:SESSION:KEY";
+
+    // token过期时间
+    private static final int TOKEN_EXPIRE = 1;
+
+    // token名
+    private static final String TOKEN_NAME = "HONEY_TOKEN";
 
     // log
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -80,18 +83,17 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录
-     * @param userName 用户名
-     * @param password 用户密码
+     * @param user 用户
      * @return
      */
     @Override
-    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+    public HoneyResult userLogin(UserBean user, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         // 获取RedisUtil实例
         RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
         // 查询用户信息
-        UserBean user = userMapper.selectUserByName(userName);
+        UserBean result = userMapper.selectUserByName(user.getName());
 
         // 没有用户
         if (null == user) {
@@ -99,14 +101,8 @@ public class UserServiceImpl implements UserService {
                     "username or password error...");
         }
 
-        // 用户名是否存在
-        if (userName.equals(user.getName())) {
-            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
-                    "username already exist...");
-        }
-
         // 校验密码
-        if (PasswordHash.validatePassword(password, user.getPassword())) {
+        if (!PasswordHash.validatePassword(user.getPassword(), result.getPassword())) {
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                     "username or password error...");
         }
@@ -116,11 +112,11 @@ public class UserServiceImpl implements UserService {
         // 清空用户密码
         user.setPassword(null);
         // 将用户名存储在redis中
-        redis.set(REDIS_USER_SESSION_KEY + ":" + token, user.getName());
+        redis.set(REDIS_USER_SESSION_KEY + ":" + token, result.getUserId());
         // 设置用户名过期时间
-        redis.expire(REDIS_USER_SESSION_KEY + ":" + token, 1800L, TimeUnit.SECONDS);
+        redis.expire(REDIS_USER_SESSION_KEY + ":" + token, TOKEN_EXPIRE, TimeUnit.DAYS);
         // 将token设置到cookie中，带回客户端
-        CookieUtil.doSetCookie(request, response, "", token);
+        CookieUtil.doSetCookie(request, response, TOKEN_NAME, token);
 
         return HoneyResult.ok(token);
     }
@@ -134,15 +130,15 @@ public class UserServiceImpl implements UserService {
         // 获取RedisUtil实例
         RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
 
-        // 查询redis，获取用户名
-        String userName = (String) redis.get(REDIS_USER_SESSION_KEY + ":" + token);
+        // 查询redis，获取用户id
+        String userId = (String) redis.get(REDIS_USER_SESSION_KEY + ":" + token);
 
-        if (StringUtils.isBlank(userName)) {
+        if (StringUtils.isBlank(userId)) {
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                     "session expired");
         }
 
-        return HoneyResult.ok(userName);
+        return HoneyResult.ok(userId);
     }
 
     /**
@@ -155,6 +151,14 @@ public class UserServiceImpl implements UserService {
 
         // 校验用户名
         if (type == HoneybeeConstants.UserCode.CHECK_USERNAME) {
+
+            UserBean result = userMapper.selectUserByName(param);
+
+            // 用户名是否存在
+            if (null != result) {
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username already exist...");
+            }
 
             // 用户名不能大于128位
             if (param.length() > MAX_LENGTH) {

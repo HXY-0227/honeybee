@@ -2,12 +2,9 @@ package com.honeybee.service;
 
 import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 /**
  * @author HXY
@@ -25,10 +22,9 @@ public interface UserService {
 
     /**
      * 用户登录
-     * @param userName 用户名
-     * @param password 用户密码
+     * @param user 用户
      */
-    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
+    public HoneyResult userLogin(UserBean user, HttpServletRequest request, HttpServletResponse response)
             throws Exception;
 
     /**

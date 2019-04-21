@@ -36,9 +36,10 @@ public final class HoneybeeConstants {
     /**
      * 用户code
      */
-    public static class UserCode {
+    public static class CheckCode {
         public static final int CHECK_USERNAME = 1;
         public static final int CHECK_PASSWORD = 2;
         public static final int CHECK_PHONE = 3;
     }
+
 }

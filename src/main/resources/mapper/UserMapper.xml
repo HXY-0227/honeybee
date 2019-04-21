@@ -18,8 +18,8 @@
     </select> -->
 
     <!-- 根据用户名查找用户 -->
-    <select id="selectByUserName" parameterType="String" resultMap="user">
-        SELECT u.user_name,u.user_phone,u.create_time,u.update_time
+    <select id="selectUserByName" parameterType="String" resultMap="user">
+        SELECT u.user_id, u.user_name, u.user_password
         FROM user_info u
         WHERE u.user_name=#{name}
     </select>
