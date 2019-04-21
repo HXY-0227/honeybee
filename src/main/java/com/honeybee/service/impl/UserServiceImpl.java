@@ -26,18 +26,6 @@ public class UserServiceImpl implements UserService {
     // userId
     private static final String USER_ID = "USER_ID";
 
-    // 用户名最大长度
-    private static final int MAX_LENGTH = 128;
-
-    // 用户名正则表达式，包含数字字母汉字
-    private static final String USER_NAME_REGEX = "^(?!_)(?!.*?_)[a-zA-Z0-9_\\u4e00-\\u9fa5]+$";
-
-    // 密码正则表达式，包含6-12位字母数字组合
-    private static final String PASSWORD_REGEX = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{6,12}$";
-
-    // 电话号码正则表达式
-    private static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
-
     // token长度
     private static final int TOKEN_LENGTH = 16;
 
@@ -127,6 +115,7 @@ public class UserServiceImpl implements UserService {
      * @param token
      * @return
      */
+    @Override
     public HoneyResult getUserByToken(String token) {
         // 获取RedisUtil实例
         RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
@@ -148,13 +137,14 @@ public class UserServiceImpl implements UserService {
      * @param type 校验类型
      * @return 校验结果
      */
+    @Override
     public HoneyResult checkUser(String param, Integer type) {
 
         // 校验用户名
         if (type == HoneybeeConstants.CheckCode.CHECK_USERNAME) {
 
             // 用户名不能大于128位
-            if (param.length() > MAX_LENGTH) {
+            if (param.length() > HoneybeeConstants.Regex.MAX_LENGTH) {
 
                 logger.info("username checked failure...");
                 return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
@@ -162,7 +152,7 @@ public class UserServiceImpl implements UserService {
             }
 
             // 校验用户名内容
-            if (!param.matches(USER_NAME_REGEX)) {
+            if (!param.matches(HoneybeeConstants.Regex.USER_NAME_REGEX)) {
                 logger.info("username checked failure...");
                 return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                         "username does't contain illegal characters");
@@ -173,7 +163,7 @@ public class UserServiceImpl implements UserService {
         if (type == HoneybeeConstants.CheckCode.CHECK_PASSWORD) {
 
             // 校验密码只能包含字母数字，且长度介于6-12
-            if (!param.matches(PASSWORD_REGEX)) {
+            if (!param.matches(HoneybeeConstants.Regex.PASSWORD_REGEX)) {
                 logger.info("password checked failure...");
                 return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                         "password can only contain numbers and letters and length between 6 and 12");
@@ -183,7 +173,7 @@ public class UserServiceImpl implements UserService {
         // 校验电话号码
         if (type == HoneybeeConstants.CheckCode.CHECK_PHONE) {
 
-            if (!param.matches(PHONE_REGEX)) {
+            if (!param.matches(HoneybeeConstants.Regex.PHONE_REGEX)) {
                 logger.info("phone checked failure...");
                 return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                         "please input correct phone number");

@@ -16,4 +16,11 @@
         INSERT INTO customer_info (customer_id,user_id,customer_name,customer_phone,total_money,create_time,update_time)
         VALUES (#{customerId},#{userId},#{customerName},#{customerPhone},#{totalMoney},#{createTime},#{updateTime})
     </insert>
+
+    <!-- 添加客户 -->
+    <select id="selectCustomerByName" parameterType="String" resultMap="customer">
+        SELECT c.customer_id
+        FROM user_info c
+        WHERE c.customerName=#{customerName}
+    </select>
 </mapper>

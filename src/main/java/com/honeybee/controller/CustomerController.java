@@ -54,7 +54,7 @@ public class CustomerController {
                     "check type is not allowed null");
         }
 
-        // 判断校验类型是否为用户名、电话、密码
+        // 判断校验类型是否为用户名、电话、金额
         if (type != HoneybeeConstants.CheckCode.CHECK_USERNAME
                 && type != HoneybeeConstants.CheckCode.CHECK_PHONE
                 && type != HoneybeeConstants.CheckCode.CHECK_MONEY) {
