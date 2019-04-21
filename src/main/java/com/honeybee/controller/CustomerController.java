@@ -56,8 +56,8 @@ public class CustomerController {
 
         // 判断校验类型是否为用户名、电话、密码
         if (type != HoneybeeConstants.CheckCode.CHECK_USERNAME
-                && type != HoneybeeConstants.CheckCode.CHECK_PASSWORD
-                && type != HoneybeeConstants.CheckCode.CHECK_PHONE) {
+                && type != HoneybeeConstants.CheckCode.CHECK_PHONE
+                && type != HoneybeeConstants.CheckCode.CHECK_MONEY) {
             logger.info("check type error");
             return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                     "check param error");
