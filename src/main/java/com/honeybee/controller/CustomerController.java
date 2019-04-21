@@ -1,8 +1,8 @@
 package com.honeybee.controller;
 
+import com.honeybee.common.bean.CustomerBean;
 import com.honeybee.common.bean.HoneyResult;
-import com.honeybee.common.bean.UserBean;
-import com.honeybee.service.UserService;
+import com.honeybee.service.CustomerService;
 import com.honeybee.utils.HoneybeeConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -10,63 +10,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
- * userController
+ * 客户处理controller
  * @author HXY
  * @version 1.0
  */
 @RestController
-@RequestMapping("/honeybee/user")
-public class UserController {
+@RequestMapping("/honeybee/customer")
+public class CustomerController {
+
+    // 日志
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
-    private UserService userService;
+    private CustomerService customerService;
 
-    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
+    @RequestMapping("add")
+    public HoneyResult addCustomer(@RequestBody CustomerBean customer) {
 
-    /**
-     * 用户登录
-     * @param user 用户
-     * @return 登录结果
-     */
-    @PostMapping("/login")
-    public HoneyResult userLogin(@RequestBody UserBean user, HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        return userService.userLogin(user, request, response);
+        return customerService.addCustomer(customer);
     }
 
     /**
-     * 根据token查询用户信息
-     * @return
-     */
-    @GetMapping("/token/{token}")
-    public HoneyResult getUserByToken(@PathVariable String token) {
-        return userService.getUserByToken(token);
-    }
-
-    /**
-     * 用户注册
-     * @return 注册结果
-     */
-    @PostMapping("/register")
-    public HoneyResult userRegister(@RequestBody UserBean user) throws Exception {
-
-        HoneyResult honeyResult = userService.userRegister(user);
-        return honeyResult;
-    }
-
-    /**
-     * ajax校验用户输入
-     * @param param 待校验的参数
+     * 校验客户信息
+     * @param param 待校验内容
      * @param type 校验类型
      * @return 校验结果
      */
     @GetMapping("/check/{param}/{type}")
-    public HoneyResult checkUser(@PathVariable String param, @PathVariable Integer type) {
+    public HoneyResult checkCustomer(@PathVariable String param, @PathVariable Integer type) {
 
         // 判断校验内容是否为空
         if (StringUtils.isBlank(param)) {
@@ -91,9 +63,6 @@ public class UserController {
                     "check param error");
         }
 
-        // 调用service层校验
-        return userService.checkUser(param, type);
-
+        return customerService.checkCustomer(param, type);
     }
-
 }

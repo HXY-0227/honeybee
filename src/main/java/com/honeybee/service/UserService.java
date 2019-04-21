@@ -2,12 +2,9 @@ package com.honeybee.service;
 
 import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.common.bean.UserBean;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 /**
  * @author HXY
