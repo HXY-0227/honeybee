@@ -10,12 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -67,14 +64,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public HoneyResult userRegister(UserBean user) throws Exception {
-
-        UserBean result = userMapper.selectUserByName(user.getName());
-
-        // 用户名是否存在
-        if (user.getName().equals(user.getName())) {
-            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
-                    "username already exist...");
-        }
 
         // userId
         String userId = IDUtil.createId(USER_ID);
@@ -162,6 +151,14 @@ public class UserServiceImpl implements UserService {
 
         // 校验用户名
         if (type == HoneybeeConstants.UserCode.CHECK_USERNAME) {
+
+            UserBean result = userMapper.selectUserByName(param);
+
+            // 用户名是否存在
+            if (null != result) {
+                return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
+                        "username already exist...");
+            }
 
             // 用户名不能大于128位
             if (param.length() > MAX_LENGTH) {
