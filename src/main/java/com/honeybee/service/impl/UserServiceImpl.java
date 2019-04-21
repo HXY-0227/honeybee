@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
     public HoneyResult checkUser(String param, Integer type) {
 
         // 校验用户名
-        if (type == HoneybeeConstants.UserCode.CHECK_USERNAME) {
+        if (type == HoneybeeConstants.CheckCode.CHECK_USERNAME) {
 
             UserBean result = userMapper.selectUserByName(param);
 
@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 校验密码
-        if (type == HoneybeeConstants.UserCode.CHECK_PASSWORD) {
+        if (type == HoneybeeConstants.CheckCode.CHECK_PASSWORD) {
 
             // 校验密码只能包含字母数字，且长度介于6-12
             if (!param.matches(PASSWORD_REGEX)) {
@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 校验电话号码
-        if (type == HoneybeeConstants.UserCode.CHECK_PHONE) {
+        if (type == HoneybeeConstants.CheckCode.CHECK_PHONE) {
 
             if (!param.matches(PHONE_REGEX)) {
                 logger.info("phone checked failure...");

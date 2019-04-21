@@ -12,14 +12,14 @@ CREATE TABLE `user_info` (
 CREATE TABLE `customer_details_info` (
   `customer_id` varchar(20) DEFAULT NULL COMMENT '客户id',
   `consume` double(10,0) DEFAULT NULL COMMENT '消费金额',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间'
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户流水表';
 
 
 CREATE TABLE `customer_info` (
-  `user_id` bigint(20) DEFAULT NULL COMMENT '商家id',
-  `customer_id` bigint(20) NOT NULL COMMENT '客户id',
+  `user_id` varchar(20) DEFAULT NULL COMMENT '商家id',
+  `customer_id` varchar(20) NOT NULL COMMENT '客户id',
   `customer_name` varchar(128) NOT NULL COMMENT '客户名',
   `customer_phone` varchar(11) NOT NULL COMMENT '客户电话',
   `total_money` double(20,0) DEFAULT NULL COMMENT '用户总金额',
