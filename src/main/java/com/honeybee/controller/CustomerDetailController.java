@@ -1,5 +1,6 @@
 package com.honeybee.controller;
 
+import com.honeybee.common.bean.CustomerBean;
 import com.honeybee.common.bean.HoneyResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class CustomerDetailController {
     }
 
     @PostMapping("/customer/findCustomerInfoByCustomerId")
-    public HoneyResult findCustomerInfoByCustomerId(String customerId)
+    public CustomerBean findCustomerInfoByCustomerId(String customerId)
             throws Exception {
 
         return customerDetailService.findCustomerInfoByCustomerId(customerId);
