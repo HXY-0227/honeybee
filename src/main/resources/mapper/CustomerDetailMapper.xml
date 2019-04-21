@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.honeybee.dao.CustomerDetailMapper">
+
+    <!-- 添加客户消费明细 -->
+    <insert id="CustomerDetail" parameterType="CustomerDetailBean">
+        INSERT INTO customerDetail (customer, money,create_time)
+        VALUES (#{userId},#{password},#{phone},#{name},#{createTime},#{updateTime})
+    </insert>
+
+    <!-- 更新客户余额信息 -->
+    <update id="id" parameterType="String">
+        UPDATE FROM customerInfo u SET u.money = #{money}, u.updateTime = #{updateTime}
+        WHERE u.Id=#{CustomerInfoId}
+    </update>
+
+    <!-- 查询客户余额信息 -->
+    <select id="customerId" parameterType="String" resultMap="CustomerInfo">
+        SELECT u.name,u.money,u.create_time,u.update_time
+        FROM customerInfo u
+        WHERE u.Id=#{customerInfoId}
+    </select>
+
+</mapper>

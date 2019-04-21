@@ -22,9 +22,10 @@ public interface UserService {
 
     /**
      * 用户登录
-     * @param user 用户
+     * @param userName 用户名
+     * @param password 密码
      */
-    public HoneyResult userLogin(UserBean user, HttpServletRequest request, HttpServletResponse response)
+    public HoneyResult userLogin(String userName, String password, HttpServletRequest request, HttpServletResponse response)
             throws Exception;
 
     /**

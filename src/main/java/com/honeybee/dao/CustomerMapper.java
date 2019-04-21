@@ -11,5 +11,12 @@ public interface CustomerMapper {
      * 添加vip客户
      * @return 是否添加成功的结果
      */
-    public HoneyResult addCustomer(CustomerBean customer);
+    public void addCustomer(CustomerBean customer);
+
+    /**
+     * 查询用户
+     * @param customerName 客户名
+     * @return 查询结果
+     */
+    public CustomerBean selectCustomerByName(String customerName);
 }
