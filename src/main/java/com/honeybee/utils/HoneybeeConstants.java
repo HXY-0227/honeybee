@@ -40,6 +40,7 @@ public final class HoneybeeConstants {
         public static final int CHECK_USERNAME = 1;
         public static final int CHECK_PASSWORD = 2;
         public static final int CHECK_PHONE = 3;
+        public static final int CHECK_MONEY = 4;
     }
 
 }
