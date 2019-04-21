@@ -36,7 +36,7 @@ public class UserController {
     public HoneyResult userLogin(@RequestBody UserBean user, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        return userService.userLogin(user, request, response);
+        return userService.userLogin(user.getName(), user.getPassword(), request, response);
     }
 
     /**
