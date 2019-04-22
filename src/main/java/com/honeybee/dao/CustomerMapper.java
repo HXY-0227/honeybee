@@ -1,7 +1,6 @@
 package com.honeybee.dao;
 
 import com.honeybee.common.bean.CustomerBean;
-import com.honeybee.common.bean.HoneyResult;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -18,5 +17,5 @@ public interface CustomerMapper {
      * @param customerName 客户名
      * @return 查询结果
      */
-    public CustomerBean selectCustomerByName(String customerName);
+    public String selectCustomerByName(String customerName);
 }

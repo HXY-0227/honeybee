@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.honeybee.dao.UserMapper">
-    <resultMap id="customer" type="com.honeybee.common.bean.CustomerBean">
-        <id column="customer_id"  property="customerId"></id>
-        <result column="user_id" property="userId"></result>
-        <result column="customer_name" property="customerName"></result>
-        <result column="customer_phone" property="customerPhone"></result>
-        <result column="total_money" property="totalMoney"></result>
-        <result column="create_time" property="createTime"></result>
-        <result column="update_time" property="updateTime"></result>
-    </resultMap>
+<mapper namespace="com.honeybee.dao.CustomerMapper">
 
     <!-- 添加客户 -->
     <insert id="addCustomer" parameterType="CustomerBean">
@@ -18,9 +9,9 @@
     </insert>
 
     <!-- 添加客户 -->
-    <select id="selectCustomerByName" parameterType="String" resultMap="customer">
+    <select id="selectCustomerByName" parameterType="String" resultType="String">
         SELECT c.customer_id
-        FROM user_info c
-        WHERE c.customerName=#{customerName}
+        FROM customer_info c
+        WHERE c.customer_name=#{customerName}
     </select>
 </mapper>

@@ -25,7 +25,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping("add")
+    @RequestMapping("/add")
     public HoneyResult addCustomer(@RequestBody CustomerBean customer) {
 
         return customerService.addCustomer(customer);

@@ -7,6 +7,7 @@ import com.honeybee.dao.CustomerMapper;
 import com.honeybee.service.CustomerService;
 import com.honeybee.utils.HoneybeeConstants;
 import com.honeybee.utils.IDUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +66,10 @@ public class CustomerServiceImpl implements CustomerService {
         // 校验用户名
         if (type == HoneybeeConstants.CheckCode.CHECK_USERNAME) {
 
-            CustomerBean result = customerMapper.selectCustomerByName(param);
+            String customId = customerMapper.selectCustomerByName(param);
 
             // 用户名是否存在
-            if (null != result) {
+            if (!StringUtils.isBlank(customId)) {
                 return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
                         "username already exist...");
             }
