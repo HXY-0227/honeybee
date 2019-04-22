@@ -19,7 +19,7 @@ public interface CustomerDetailService {
      * @return
      */
 
-    public HoneyResult addCustomerDeatil(String id, Double money) throws Exception;
+    public HoneyResult addCustomerDetail(String id, Double money);
 
     /**
      * 更新客户余额信息
@@ -27,7 +27,7 @@ public interface CustomerDetailService {
      * @return
      * @throws Exception
      */
-    public HoneyResult updateCustomerInfo(String id, Double money) throws Exception;
+    public HoneyResult updateCustomerInfo(String id, Double money);
 
     /**
      * 查询客户余额信息
@@ -35,5 +35,5 @@ public interface CustomerDetailService {
      * @return
      * @throws Exception
      */
-    public CustomerBean findCustomerInfoByCustomerId(String customerId) throws Exception;
+    public CustomerBean findCustomerInfoByCustomerId(String customerId);
 }

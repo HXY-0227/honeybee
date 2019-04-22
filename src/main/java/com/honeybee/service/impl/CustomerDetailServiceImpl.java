@@ -36,19 +36,18 @@ public class CustomerDetailServiceImpl implements CustomerDetailService {
 
     /**
      *  上传消费明细
-     * @param id
-     * @param money
      * @return
      */
     @Override
-    public HoneyResult addCustomerDeatil(String id, Double money) throws Exception {
+    public HoneyResult addCustomerDetail(String customer_id, Double consume){
 
         CustomerDetailBean customerDetailBean = new CustomerDetailBean();
-        customerDetailBean.setCustomerId(id);
-        customerDetailBean.setMoney(money);
+        customerDetailBean.setCustomerId(customer_id);
+        customerDetailBean.setMoney(consume);
         customerDetailBean.setCreateTime(new Date());
-        customerDetailMapper.addCustomerDeatil(customerDetailBean);
+        customerDetailMapper.addCustomerDetail(customerDetailBean);
 
+        logger.info("add customerDetail successfully...");
         return HoneyResult.ok();
     }
 
@@ -59,14 +58,15 @@ public class CustomerDetailServiceImpl implements CustomerDetailService {
      * @return
      * @throws Exception
      */
-    public HoneyResult updateCustomerInfo(String id, Double money) throws Exception {
+    public HoneyResult updateCustomerInfo(String id, Double money) {
 
-        if(StringUtils.isEmpty(id)){
-            logger.info("客户Id不能为空");
-            return HoneyResult.build(HoneybeeConstants.HttpStatusCode.BAD_REQUEST.getCode(),
-                    "客户ID不能为空");
-        }
-        int result = customerDetailMapper.updateCustomerInfo(id,money);
+        double consume = findCustomerInfoByCustomerId(id).getTotalMoney()-money;
+        CustomerBean customerInfo = new CustomerBean();
+        customerInfo.setUpdateTime(new Date());
+        customerInfo.setCustomerId(id);
+        customerInfo.setTotalMoney(consume);
+        customerDetailMapper.updateCustomerInfo(customerInfo);
+        logger.info("update customerInfo successfully...");
         return HoneyResult.ok();
     }
 
@@ -76,7 +76,7 @@ public class CustomerDetailServiceImpl implements CustomerDetailService {
      * @return
      * @throws Exception
      */
-    public CustomerBean findCustomerInfoByCustomerId(String id) throws Exception{
+    public CustomerBean findCustomerInfoByCustomerId(String id){
 
         CustomerBean customerInfo = customerDetailMapper.findCustomerInfoByCustomerId(id);
 

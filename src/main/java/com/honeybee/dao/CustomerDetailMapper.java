@@ -25,14 +25,12 @@ public interface CustomerDetailMapper {
      * @param customerDetailBean
      * @return
      */
-    int addCustomerDeatil(CustomerDetailBean customerDetailBean);
+    int addCustomerDetail(CustomerDetailBean customerDetailBean);
 
     /**
      * 修改用户余额信息
-     * @param id
-     * @param money
      * @return
      */
-    int updateCustomerInfo(String id, Double money);
+    int updateCustomerInfo(CustomerBean customerBean);
 
 }

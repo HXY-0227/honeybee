@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.honeybee.dao.CustomerDetailMapper">
 
-    <resultMap id="CustomerInfo" type="com.honeybee.common.bean.CustomerDetailBean">
-        <result column="money"  property="money"></result>
-        <result column="name" property="name"></result>
+    <resultMap id="CustomerInfo" type="com.honeybee.common.bean.CustomerBean">
+        <result column="total_money"  property="totalMoney"></result>
+        <result column="customer_name" property="customerName"></result>
     </resultMap>
 
     <!-- 添加客户消费明细 -->
-    <insert id="CustomerDetail" parameterType="CustomerDetailBean">
-        INSERT INTO customer_detail (customer, money,create_time)
-        VALUES (#{userId},#{password},#{phone},#{name},#{createTime},#{updateTime})
+    <insert id="addCustomerDetail" parameterType="CustomerDetailBean">
+        INSERT INTO customer_details_info (customer_id, consume,create_time)
+        VALUES (#{customerId},#{money},#{createTime})
     </insert>
 
     <!-- 更新客户余额信息 -->
-    <update id="id" parameterType="String">
-        UPDATE FROM customer_info u SET u.money = #{money}, u.updateTime = #{updateTime}
-        WHERE u.Id=#{CustomerInfoId}
+    <update id="updateCustomerInfo" parameterType="CustomerBean">
+        UPDATE customer_info u SET u.total_money = #{totalMoney}, u.update_time = #{updateTime}
+        WHERE u.customer_id=#{customerId}
     </update>
 
     <!-- 查询客户余额信息 -->
-    <select id="customerId" parameterType="String" resultMap="CustomerInfo">
-        SELECT u.name,u.money,u.create_time,u.update_time
+    <select id="findCustomerInfoByCustomerId" parameterType="map" resultMap="CustomerInfo">
+        SELECT u.customer_name,u.total_money,u.create_time,u.update_time
         FROM customer_info u
-        WHERE u.Id=#{customerInfoId}
+        WHERE u.customer_id=#{id}
     </select>
 
 </mapper>
