@@ -28,31 +28,31 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         CustomerInfoBean userInfoBean = null;
         switch (timeType) {
             case "day":
-                userInfoBean = queryUserDayInfo(userId, timeType);
+                userInfoBean = queryUserDayInfo(userId );
                 break;
             case "week":
-                userInfoBean = queryUserWeekInfo(userId, timeType);
+                userInfoBean = queryUserWeekInfo(userId );
                 break;
             case "month":
-                userInfoBean = queryUserMonthInfo(userId, timeType);
+                userInfoBean = queryUserMonthInfo(userId );
                 break;
             case "threeMonth":
-                userInfoBean = queryUserThreeMonthInfo(userId, timeType);
+                userInfoBean = queryUserThreeMonthInfo(userId );
                 break;
             case "year":
-                userInfoBean = queryUserYearInfo(userId, timeType);
+                userInfoBean = queryUserYearInfo(userId );
                 break;
         }
         return userInfoBean;
     }
 
-    private CustomerInfoBean queryUserDayInfo(String userId, String timeType) {
+    private CustomerInfoBean queryUserDayInfo(String userId ) {
         CustomerInfoBean customerInfoBean = null;
         //查询总会员
         String totalMember = customerInfoMapper.queryTotalMember(userId);
         Map <String, String> day = DateUtils.getDay();
         day.put("userId", userId);
-        customerInfoBean = customerInfoMapper.queryCustomerInfo(day);
+        customerInfoBean = customerInfoMapper.queryCustomerDayInfo(day);
         if (customerInfoBean != null) {
             customerInfoBean.setTotalMember(totalMember);
         }
@@ -60,7 +60,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
 
     }
 
-    private CustomerInfoBean queryUserWeekInfo(String userId, String timeType) {
+    private CustomerInfoBean queryUserWeekInfo(String userId ) {
         CustomerInfoBean customerInfoBean = null;
         //查询总会员
         String totalMember = customerInfoMapper.queryTotalMember(userId);
@@ -75,7 +75,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
 
     }
 
-    private CustomerInfoBean queryUserMonthInfo(String userId, String timeType) {
+    private CustomerInfoBean queryUserMonthInfo(String userId ) {
         CustomerInfoBean customerInfoBean = null;
         //查询总会员
         String totalMember = customerInfoMapper.queryTotalMember(userId);
@@ -89,7 +89,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
 
     }
 
-    private CustomerInfoBean queryUserThreeMonthInfo(String userId, String timeType) {
+    private CustomerInfoBean queryUserThreeMonthInfo(String userId ) {
         CustomerInfoBean customerInfoBean = null;
         //查询总会员
         String totalMember = customerInfoMapper.queryTotalMember(userId);
@@ -102,7 +102,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         return customerInfoBean;
     }
 
-    private CustomerInfoBean queryUserYearInfo(String userId, String timeType) {
+    private CustomerInfoBean queryUserYearInfo(String userId) {
         CustomerInfoBean customerInfoBean = new CustomerInfoBean();
         //查询总会员
         String totalMember = customerInfoMapper.queryTotalMember(userId);

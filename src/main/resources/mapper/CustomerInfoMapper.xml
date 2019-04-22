@@ -20,17 +20,33 @@
 
     <!-- 根据时间点查询客户的信息 -->
     <select id="queryCustomerInfo" parameterType="Map" resultMap="CustomerInfoBase">
-        select  count(customer_id) new_Member ,sum(total_money) total_Profit from  customer_info where user_id=#{userId}
+        select
+        IFNULL(count(customer_id),0) new_Member,
+        IFNULL(sum(total_money),0) total_Profit
+         from  customer_info
+         where user_id=#{userId}
         and create_time>=#{firstDay}
-        and create_time<![CDATA[<=]]>#{today}
+            and create_time<![CDATA[<=]]>#{today}
     </select>
+
+    <!-- 根据时间点查询客户的信息 -->
+    <select id="queryCustomerDayInfo" parameterType="Map" resultMap="CustomerInfoBase">
+       SELECT
+       IFNULL(count(customer_id),0) new_Member,
+        IFNULL(sum(total_money),0) total_Profit
+        from  customer_info
+        where user_id=#{userId}
+        and create_time=#{firstDay}
+    </select>
+
+
 
 
     <!-- 根据时间点查询客户近一年的信息 -->
     <select id="queryCustomerYearInfo" parameterType="Map" resultMap="CustomerYearInfoBase">
         SELECT
-        count(customer_id) new_Member,
-        sum(total_money) total_Profit,
+        IFNULL(count(customer_id),0) new_Member,
+        IFNULL(sum(total_money),0) total_Profit,
         t.create_time monthTime
         FROM
         (

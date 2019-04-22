@@ -27,6 +27,8 @@ public interface CustomerInfoMapper {
 
     CustomerInfoBean queryCustomerInfo(Map<String,String> map);
 
+    CustomerInfoBean queryCustomerDayInfo(Map<String,String> map);
+
 
     List<CustomerYearInfoBean> queryCustomerYearInfo(Map<String,String> map);
 
