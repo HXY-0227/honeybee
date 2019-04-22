@@ -45,7 +45,7 @@ public class DateUtils {
         Map <String, String> map = new HashMap();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
-        map.put("firstday", date);
+        map.put("firstDay", date);
         map.put("today", date);
         return  map;
     }
@@ -70,7 +70,7 @@ public class DateUtils {
         cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - dayWeek);
         Date mondayDate = cal.getTime();
         String firstday = format.format(mondayDate);
-        map.put("firstday", firstday);
+        map.put("firstDay", firstday);
         map.put("today", today);
         return map;
     }
@@ -90,7 +90,7 @@ public class DateUtils {
         cale.add(Calendar.MONTH, 0);
         cale.set(Calendar.DAY_OF_MONTH, 1);
         String firstday = format.format(cale.getTime());
-        map.put("firstday", firstday);
+        map.put("firstDay", firstday);
         map.put("today", today);
         return map;
     }
@@ -110,7 +110,7 @@ public class DateUtils {
         cale.add(Calendar.MONTH, -2);
         cale.set(Calendar.DAY_OF_MONTH,1);
         String firstday = format.format(cale.getTime());
-        map.put("firstday", firstday);
+        map.put("firstDay", firstday);
         map.put("today", today);
         return map;
     }
@@ -131,7 +131,7 @@ public class DateUtils {
         cale.add(Calendar.MONTH, +1);
         cale.set(Calendar.DAY_OF_MONTH,1);
         String firstday = format.format(cale.getTime());
-        map.put("firstday", firstday);
+        map.put("firstDay", firstday);
         map.put("today", today);
         return map;
     }
