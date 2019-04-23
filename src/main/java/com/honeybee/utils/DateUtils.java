@@ -43,7 +43,7 @@ public class DateUtils {
      */
     public static Map <String, String> getDay() {
         Map <String, String> map = new HashMap();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = sdf.format(new Date());
         map.put("firstDay", date);
         map.put("today", date);
@@ -58,7 +58,7 @@ public class DateUtils {
      */
     public static Map getWeek() {
         Map <String, String> map = new HashMap();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
         Date time = cal.getTime();
         String today = format.format(time);
@@ -83,7 +83,7 @@ public class DateUtils {
      */
     public static Map <String, String> getMonth() {
         HashMap <String, String> map = new HashMap <>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cale = Calendar.getInstance();
         Date time = cale.getTime();
         String today = format.format(time);
@@ -103,7 +103,7 @@ public class DateUtils {
      */
     public static Map <String, String> getThreeMonth() {
         HashMap <String, String> map = new HashMap <>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cale = Calendar.getInstance();
         Date time = cale.getTime();
         String today = format.format(time);
@@ -123,7 +123,7 @@ public class DateUtils {
      */
     public static Map <String, String> getYear() {
         HashMap <String, String> map = new HashMap <>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cale = Calendar.getInstance();
         Date time = cale.getTime();
         String today = format.format(time);
