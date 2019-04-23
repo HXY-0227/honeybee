@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.honeybee.common.bean.CustomerInfoBean;
 import com.honeybee.common.bean.HoneyResult;
 import com.honeybee.service.CustomerInfoService;
+import com.honeybee.utils.RedisUtil;
+import com.honeybee.utils.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +47,8 @@ public class CustomerInfoController {
         String token = request.getHeader("token");
         JSONObject requestData = JSON.parseObject(requestBody);
         String timeType = requestData.getString("timeType");
-        //RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
-        //String userId = String.valueOf(redis.get(baseKey + token));
-        String userId ="1";
+        RedisUtil redis = SpringContextUtil.getInstance().getBeanByClass(RedisUtil.class);
+        String userId = String.valueOf(redis.get(baseKey + token));
         CustomerInfoBean userInfoBean = customerInfoService.queryUserTotalMoney(userId,timeType);
         return HoneyResult.ok(userInfoBean);
     }
