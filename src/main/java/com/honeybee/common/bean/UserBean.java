@@ -1,5 +1,7 @@
 package com.honeybee.common.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,37 +13,27 @@ import java.util.Date;
  * @version 1.0
  */
 @Data
+@ApiModel(value = "用户信息")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = -548072219559017078L;
-    /**
-     *  用户Id
-     */
+
+    @ApiModelProperty(value = "用户Id", required = true)
     private String userId;
 
-    /**
-     * 用户密码
-     */
+    @ApiModelProperty(value = "用户密码", required = true)
     private String password;
 
-    /**
-     * 用户手机号
-     */
+    @ApiModelProperty(value = "用户手机号", required = true)
     private String phone;
 
-    /**
-     * 用户昵称
-     */
+    @ApiModelProperty(value = "用户昵称", required = true)
     private String name;
 
-    /**
-     * 创建时间
-     */
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    /**
-     * 更新时间
-     */
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
 }

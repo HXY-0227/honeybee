@@ -2,7 +2,6 @@ package com.honeybee.common.configure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -32,6 +31,7 @@ public class SwaggerConfigure {
      *       通过方法上的注解扫描，如withMethodAnnotation(GetMapping.class)只扫描get请求
      *     5.RequestHandlerSelectors.withClassAnnotation(final Class<? extends Annotation> annotation)
      *       通过类上的注解扫描，如.withClassAnnotation(Controller.class)只扫描有controller注解的类中的接口
+     *
      * @return Docket
      */
     @Bean
@@ -43,7 +43,7 @@ public class SwaggerConfigure {
                 // PathSelectors.any("/*")
                 // PathSelectors.none()
                 // PathSelectors.regex()
-                .paths(PathSelectors.ant("/*"))
+                //.paths(PathSelectors.ant("/*"))
                 .build();
     }
 

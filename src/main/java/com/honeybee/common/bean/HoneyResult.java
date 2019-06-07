@@ -1,7 +1,8 @@
 package com.honeybee.common.bean;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.honeybee.utils.HoneybeeConstants;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,20 +13,18 @@ import java.io.Serializable;
  * @version 1.0
  */
 @Data
+@ApiModel(value = "响应结果")
 public class HoneyResult implements Serializable {
 
     private static final long serialVersionUID = -570683798213903190L;
 
-    //自定义jackson对象
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-    //响应状态码
+    @ApiModelProperty(value = "响应状态码", required = true)
     private Integer status;
 
-    //响应信息
+    @ApiModelProperty(value = "响应结果", required = true)
     private String msg;
 
-    //响应数据
+    @ApiModelProperty(value = "相应数据", required = true)
     private Object data;
 
     /**
