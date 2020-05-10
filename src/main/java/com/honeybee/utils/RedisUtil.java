@@ -115,8 +115,8 @@ public class RedisUtil {
      * @param key key
      * @return 返回给定的key值
      */
-    public Object get(String key) {
-        return redisTemplate.opsForValue().get(key);
+    public String get(String key) {
+        return redisTemplate.opsForValue().get(key).toString();
     }
 
     /**
