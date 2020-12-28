@@ -1,4 +1,4 @@
-package com.honeybee.common.Filter;
+package com.honeybee.common.filter;
 
 import com.honeybee.wrapper.InjectionAttackWrapper;
 import org.springframework.web.filter.OncePerRequestFilter;

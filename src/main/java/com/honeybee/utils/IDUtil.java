@@ -54,8 +54,7 @@ public class IDUtil {
             // 指定key自增
             Long result = redis.incrBy(key, ID_INCREMENT);
             // 生成最终ID
-            String id = getCurrentTime() + String.format(ID_FORMAT, result);
-            return id;
+            return getCurrentTime() + String.format(ID_FORMAT, result);
         } catch (Exception e) {
             logger.error("create id failed..", e);
             // TODO 补充异常情况下id生成策略
